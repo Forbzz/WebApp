@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Data.Domain.HomeInfo;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 
 namespace Data.Domain
@@ -21,6 +23,15 @@ namespace Data.Domain
 
         [Display(Name = "Отчество")]
         public string Name3 { get; set; }
+
+        public Gender Male { get; set; }
+
+        //public int? AddressId { get; set; }
+
+        //[ForeignKey(nameof(AddressId))]
+        public Address Address { get; set; }
+
+        public Contacts Contacts { get; set; }
 
     }
 }
