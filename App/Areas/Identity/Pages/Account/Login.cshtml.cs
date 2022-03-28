@@ -43,15 +43,15 @@ namespace App.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Введите почту")]
+            [EmailAddress(ErrorMessage = "Укажите почту")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Введите пароль")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Запомнить меня?")]
             public bool RememberMe { get; set; }
         }
 
