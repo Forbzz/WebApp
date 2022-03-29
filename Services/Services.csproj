@@ -5,11 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LinqKit" Version="1.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj" />
+    <Folder Include="Interface\" />
+    <Folder Include="Implementation\" />
   </ItemGroup>
 
 </Project>

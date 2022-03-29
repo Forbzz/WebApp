@@ -39,6 +39,8 @@ namespace Data.Domain
         [Display(Name = "Диагнозы")]
         public IEnumerable<Diagnose> Diagnoses { get; set; }
 
+        public IEnumerable<Recommendation> Recommendations { get; set; }
+
 
     }
 }

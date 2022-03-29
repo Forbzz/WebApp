@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 
 
@@ -26,9 +27,9 @@ namespace Data.Domain
 
         public Gender Male { get; set; }
 
-        //public int? AddressId { get; set; }
+        public int? AddressId { get; set; }
 
-        //[ForeignKey(nameof(AddressId))]
+        [ForeignKey(nameof(AddressId))]
         public Address Address { get; set; }
 
         public Contacts Contacts { get; set; }

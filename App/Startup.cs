@@ -1,4 +1,5 @@
 using App.Data;
+using Data;
 using Data.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,10 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Repository.Implementation;
+using Repository.Interface;
 
 namespace App
 {
@@ -45,6 +44,15 @@ namespace App
             }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllersWithViews();
+
+            services.AddScoped<ICardService, CardService>();
+            services.AddScoped<IDoctorService, DoctorService>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IPacientService, PacientService>();
+            services.AddScoped<IScheduleService, ScheduleService>();
+            services.AddScoped<IServicesService, ServicesService>();
+            services.AddScoped<IStatsService, StatsService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
