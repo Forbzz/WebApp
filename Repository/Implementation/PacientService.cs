@@ -32,7 +32,7 @@ namespace Repository.Implementation
             if (includeAddress)
                 query = query.Include(x => x.Address)
                     .Include(x => x.Address.Country)
-                    .Include(x => x.Address.Region)
+                    //.Include(x => x.Address.Region)
                     .Include(x => x.Address.District)
                     .Include(x => x.Address.Street)
                     .Include(x => x.Address.Town);
@@ -55,7 +55,7 @@ namespace Repository.Implementation
             {
                 query = query.Include(x => x.Address)
                     .Include(x => x.Address.Country)
-                    .Include(x => x.Address.Region)
+                    //.Include(x => x.Address.Region)
                     .Include(x => x.Address.District)
                     .Include(x => x.Address.Street)
                     .Include(x => x.Address.Town);
@@ -85,7 +85,7 @@ namespace Repository.Implementation
                 query = query.Include(x => x.Address)
                     .Include(x => x.Address.Country)
                     .Include(x => x.Address.District)
-                    .Include(x => x.Address.Region)
+                    //.Include(x => x.Address.Region)
                     .Include(x => x.Address.Street)
                     .Include(x => x.Address.Town);
             }
@@ -144,12 +144,19 @@ namespace Repository.Implementation
 
             foreach (var ad in addresses)
             {
-                predicate.Or(x => x.Address.Country.FullName.Contains(ad));
-                predicate.Or(x => x.Address.District.Name.Contains(ad));
-                predicate.Or(x => x.Address.District.Name.Contains(ad));
-                predicate.Or(x => x.Address.Region.Name.Contains(ad));
-                predicate.Or(x => x.Address.Street.Name.Contains(ad));
-                predicate.Or(x => x.Address.Town.Name.Contains(ad));
+                //predicate.Or(x => x.Address.Country.FullName.Contains(ad));
+                //predicate.Or(x => x.Address.District.Name.Contains(ad));
+                //predicate.Or(x => x.Address.District.Name.Contains(ad));
+                //predicate.Or(x => x.Address.Region.Name.Contains(ad));
+                //predicate.Or(x => x.Address.Street.Name.Contains(ad));
+                //predicate.Or(x => x.Address.Town.Name.Contains(ad));
+                //predicate.Or(x => x.Address.HomeNumber.Contains(ad));
+
+                predicate.Or(x => x.Address.Country.Contains(ad));
+                predicate.Or(x => x.Address.District.Contains(ad));
+                predicate.Or(x => x.Address.District.Contains(ad));
+                predicate.Or(x => x.Address.Street.Contains(ad));
+                predicate.Or(x => x.Address.Town.Contains(ad));
                 predicate.Or(x => x.Address.HomeNumber.Contains(ad));
             }
             return predicate;

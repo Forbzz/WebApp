@@ -2,42 +2,47 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Domain.HomeInfo
+namespace App.ViewModels.Address
 {
-    public class Address
+    public class AddressViewModel
     {
-        [Key]
-        public int Id { get; set; }
-
+        [Required]
         [Display(Name = "Страна")]
         public string Country { get; set; }
 
-        //[Display(Name = "Область")]
-        //public string Region { get; set; }
+        [Required]
+        [Display(Name = "Область")]
+        public string Region { get; set; }
 
+        [Required]
         [Display(Name = "Район")]
         public string District { get; set; }
 
+        [Required]
         [Display(Name = "Город")]
         public string Town { get; set; }
 
-        public TownType TownType { get; set; }
-
+        [Required]
         [Display(Name = "Улица")]
         public string Street { get; set; }
 
-        public StreetType StreetType { get; set; }
-
+        [Required]
         [Display(Name = "Номер дома")]
+        [Range(1, 2147483647)]
         public string HomeNumber { get; set; }
 
         [Display(Name = "Номер квартиры")]
         public string ApartmentNumber { get; set; }
 
-        public AppUser User { get; set; }
+        [Required]
+        [Display(Name = "Почтовый индекс")]
+        [DataType(DataType.PostalCode)]
+        public int? PostalCode { get; set; }
+
+        public string UserId { get; set; }
+
+        public string returnUrl { get; set; }
     }
 }
-

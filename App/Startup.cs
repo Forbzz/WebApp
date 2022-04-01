@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repository.Implementation;
 using Repository.Interface;
+using Services.Implementation;
+using Services.Interface;
 
 namespace App
 {
@@ -45,6 +47,7 @@ namespace App
 
             services.AddControllersWithViews();
 
+            services.AddSingleton<IEmailService, EmailService>();
             services.AddScoped<ICardService, CardService>();
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IIdentityService, IdentityService>();
@@ -53,6 +56,7 @@ namespace App
             services.AddScoped<IServicesService, ServicesService>();
             services.AddScoped<IStatsService, StatsService>();
             services.AddScoped<IUserService, UserService>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

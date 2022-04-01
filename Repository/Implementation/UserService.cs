@@ -29,20 +29,32 @@ namespace Repository.Implementation
             string district, string homeNumber, int? postalCode, string region, string street, string town)
         {
             var address = await _dbContext.Addresses.Where(x => x.User.Id == userId)
-                .Include(x => x.Country).Include(x => x.District).Include(x => x.Region)
+                .Include(x => x.Country).Include(x => x.District)
+                //.Include(x => x.Country).Include(x => x.District).Include(x => x.Region)
                 .Include(x => x.Street).Include(x => x.Town).FirstOrDefaultAsync();
             address.ApartmentNumber = apartmentNumber;
             address.HomeNumber = homeNumber;
-            if (address?.Country?.FullName != country)
-                address.Country = await AddCountry(country);
-            if (address?.Region?.Name != region)
-                address.Region = await AddRegion(region);
-            if (address?.District?.Name != district)
-                address.District = await AddDistrict(district);
-            if (address?.Town?.Name != town)
-                address.Town = await AddTown(town);
-            if (address?.Street?.Name != street)
-                address.Street = await AddStreet(street);
+
+            //if (address?.Country != country)
+            //    address.Country = await AddCountry(country);
+            //if (address?.District != district)
+            //    address.District = await AddDistrict(district);
+            //if (address?.Town != town)
+            //    address.Town = await AddTown(town);
+            //if (address?.Street != street)
+            //    address.Street = await AddStreet(street);
+
+            //if (address?.Country?.FullName != country)
+            //    address.Country = await AddCountry(country);
+            //if (address?.Region?.Name != region)
+            //    address.Region = await AddRegion(region);
+            //if (address?.District?.Name != district)
+            //    address.District = await AddDistrict(district);
+            //if (address?.Town?.Name != town)
+            //    address.Town = await AddTown(town);
+            //if (address?.Street?.Name != street)
+            //    address.Street = await AddStreet(street);
+
             _dbContext.Addresses.Update(address);
             await _dbContext.SaveChangesAsync();
         }
@@ -105,7 +117,8 @@ namespace Repository.Implementation
         public async Task<Address> GetUserAddress(string userId)
         {
             var adress = await _dbContext.Addresses.Where(x => x.User.Id == userId)
-                .Include(x => x.Country).Include(x => x.District).Include(x => x.Region)
+                //.Include(x => x.Country).Include(x => x.District).Include(x => x.Region)
+                .Include(x => x.Country).Include(x => x.District)
                 .Include(x => x.Street).Include(x => x.Town).FirstOrDefaultAsync();
             return adress;
         }
