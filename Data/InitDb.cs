@@ -18,11 +18,43 @@ namespace Data
             var userManager = serivce.GetRequiredService<UserManager<AppUser>>();
             var rolesManager = serivce.GetRequiredService<RoleManager<IdentityRole>>();
 
+            await CreateBranches(db);
+            await CreateSpecs(db);
             await CreateRoles(rolesManager);
             await CreateAdmin(userManager);
             await CreateDoctor(db, userManager);
             await CreatePacients(db, userManager);
-        
+
+        }
+
+        private static async Task CreateBranches(ApplicationDbContext context)
+        {
+            if (context.Branches.Count() <= 0)
+            {
+                var b = new List<Branch>()
+                {
+                    new Branch(){Name = "Отделение 1", Description = "Описание отделения 1"},
+                    new Branch(){Name = "Отделение 2", Description = "Описание отделения 2"},
+                    new Branch(){Name = "Отделение 3", Description = "Описание отделения 3"}
+
+                };
+                await context.Branches.AddRangeAsync(b);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        private static async Task CreateSpecs(ApplicationDbContext context)
+        {
+            if (context.Specialities.Count() <= 0)
+            {
+                var s = new List<Speciality>()
+                {
+                    new Speciality(){ Name = "Специальность 1", Description = "Описание специальности 1"},
+                    new Speciality(){ Name = "Специальность 2", Description = "Описание специальности 2"}
+                };
+                await context.Specialities.AddRangeAsync(s);
+                await context.SaveChangesAsync();
+            }
         }
 
         private static async Task CreateRoles(RoleManager<IdentityRole> roleManager)
@@ -43,7 +75,7 @@ namespace Data
             }
 
             role = await roleManager.FindByNameAsync(adminRole);
-            if(role == null)
+            if (role == null)
             {
                 await roleManager.CreateAsync(new IdentityRole(adminRole));
             }
@@ -55,7 +87,7 @@ namespace Data
             var adminPassword = "1234567";
 
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
-            if(adminUser == null)
+            if (adminUser == null)
             {
                 adminUser = new AppUser()
                 {
@@ -71,28 +103,94 @@ namespace Data
 
         private static async Task CreateDoctor(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
-            var doctorEmail = "doctor@gmail.com";
-            var doctorPassword = "1234567";
+            //var doctorEmail = "doctor@gmail.com";
+            //var doctorPassword = "1234567";
 
-            var doctorUser = await userManager.FindByEmailAsync(doctorEmail);
-            if(doctorUser is Doctor doctor)
+            //var doctorUser = await userManager.FindByEmailAsync(doctorEmail);
+            //if (doctorUser == null)
+            //{
+            //    var user = new Doctor()
+            //    {
+            //        Email = doctorEmail,
+            //        Name1 = "Алексей",
+            //        Name2 = "Шелов",
+            //        Name3 = "Генадьевич",
+            //        UserName = doctorEmail,
+            //        EmailConfirmed = true,
+            //        RegistrationDate = DateTime.Now,
+            //        Contacts = new Contacts(),
+            //        Male = Gender.Male,
+            //        Address = new Address()
+            //    };
+
+            //    user.Speciality = context.Specialities.FirstOrDefault();
+            //    user.Branch = context.Branches.FirstOrDefault();
+            //    await userManager.CreateAsync(user, doctorPassword);
+            //    await userManager.AddToRoleAsync(user, "Doctor");
+            //}
+
+            if (context.Doctors.Count() == 0)
             {
-                var user = new Doctor()
+                var doctors = new List<Doctor>()
                 {
-                    Email = doctorEmail,
-                    Name1 = "Алексей",
-                    Name2 = "Шелов",
-                    Name3 = "Генадьевич",
-                    UserName = doctorEmail,
-                    EmailConfirmed = true,
-                    RegistrationDate = DateTime.Now,
-                    Contacts = new Contacts(),
-                    Male = Gender.Male,
-                    Address = new Address()
+                    new Doctor()
+                    {
+                        Email = "doctor1@gmail.com",
+                        Name1 = "Алексей",
+                        Name2 = "Шелов",
+                        Name3 = "Генадьевич",
+                        UserName = "doctor1@gmail.com",
+                        EmailConfirmed = true,
+                        RegistrationDate = DateTime.Now,
+                        Contacts = new Contacts(),
+                        Male = Gender.Male,
+                        Address = new Address()
+                        {
+                            Country = "Беларусь",
+                            District = "Московский",
+                            Street = "ул.Кижеватова",
+                            StreetType = StreetType.Street,
+                            Town = "Минск",
+                            TownType = TownType.Town,
+                            HomeNumber = "5",
+                            ApartmentNumber = "122"
+
+                        }
+                    },
+
+                    new Doctor()
+                    {
+                        Email = "doctor2@gmail.com",
+                        Name1 = "Елена",
+                        Name2 = "Шилко",
+                        Name3 = "Генадьевна",
+                        UserName = "doctor2@gmail.com",
+                        EmailConfirmed = true,
+                        RegistrationDate = DateTime.Now,
+                        Contacts = new Contacts(),
+                        Male = Gender.Female,
+                        Address = new Address()
+                        {
+                            Country = "Беларусь",
+                            District = "Заводской",
+                            Street = "ул.Гаврилова",
+                            StreetType = StreetType.Street,
+                            Town = "Минск",
+                            TownType = TownType.Town,
+                            HomeNumber = "11",
+                            ApartmentNumber = "311"
+
+                        }
+                    }
                 };
 
-                await userManager.CreateAsync(user, doctorPassword);
-                await userManager.AddToRoleAsync(user, "Doctor");
+                foreach(var user in doctors)
+                {
+                    user.Speciality = context.Specialities.FirstOrDefault();
+                    user.Branch = context.Branches.FirstOrDefault();
+                    await userManager.CreateAsync(user, "1234567");
+                    await userManager.AddToRoleAsync(user, "Doctor");
+                }
             }
         }
 
@@ -164,7 +262,7 @@ namespace Data
 
                 };
 
-                foreach(var user in pacients)
+                foreach (var user in pacients)
                 {
                     await userManager.CreateAsync(user, "1234567");
                     await userManager.AddToRoleAsync(user, "Pacient");

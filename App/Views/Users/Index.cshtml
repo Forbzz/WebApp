@@ -1,0 +1,41 @@
+﻿@{ 
+    ViewData["Title"] = "Пользователи";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+<div id="modal-placeholder"></div>
+
+<div class="row mb-2">
+    <div class="col">
+        Пользователи
+    </div>
+    <div class="col d-flex align-items-center justify-content-end">
+        <a type="button" class="btn btn-primary" asp-action="Create" asp-route-returnUrl="@currentUrl">Создать пользователя</a>
+        <button id="backBtn" type="button" class="btn btn-primary">Назад</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <table id="users-table" class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Почта</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Отчество</th>
+                    <th scope="col">Роль</th>
+                    <th scope="col">Действия</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Users/Index.js"></script>
+    <script type="text/javascript">
+        returnUrl = "@currentUrl"
+    </script>
+}

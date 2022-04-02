@@ -1,0 +1,77 @@
+﻿@model PacientEditViewModel
+@{
+    @ViewData["Title"];
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="row">
+            <a asp-controller="Users" asp-action="ChangeAddress" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" class="btn btn-primary">
+                Измеить адрес
+            </a>
+        </div>
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Pacient.Id" />
+            <input type="hidden" asp-for="@Model.ReturnUrl" />
+            <input type="hidden" asp-for="@Model.Pacient.Card.Id"/>
+            <input type="hidden" asp-for="@Model.Pacient.Contacts.Id" />
+            <div class="form-group">
+                <label asp-for="@Model.Pacient.Name1"></label>
+                <input asp-for="@Model.Pacient.Name1" class="form-control" />
+                <span asp-validation-for="@Model.Pacient.Name1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Pacient.Name2"></label>
+                <input asp-for="@Model.Pacient.Name2" class="form-control" />
+                <span asp-validation-for="@Model.Pacient.Name2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Pacient.Name3"></label>
+                <input asp-for="@Model.Pacient.Name3" class="form-control" />
+                <span asp-validation-for="@Model.Pacient.Name3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pacient.Male"></label>
+                <select asp-for="@Model.Pacient.Male">
+                    <option selected disabled>Выберите пол</option>
+                    <option value="@Gender.Male">Мужской</option>
+                    <option value="@Gender.Female">Женский</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Pacient.Contacts.Mail"></label>
+                <input asp-for="@Model.Pacient.Contacts.Mail" class="form-control" />
+                <span asp-validation-for="@Model.Pacient.Contacts.Mail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Pacient.Contacts.Phone"></label>
+                <input asp-for="@Model.Pacient.Contacts.Phone" class="form-control" />
+                <span asp-validation-for="@Model.Pacient.Contacts.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Pacient.BirthDay"></label>
+                <input asp-for="@Model.Pacient.BirthDay" class="form-control" />
+                <span asp-validation-for="@Model.Pacient.BirthDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Pacient.Work"></label>
+                <input asp-for="@Model.Pacient.Work" class="form-control" />
+                <span asp-validation-for="@Model.Pacient.Work" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Pacient.Card.Number"></label>
+                <input asp-for="@Model.Pacient.Card.Number" class="form-control" />
+                <span asp-validation-for="@Model.Pacient.Card.Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+                <a class="btn btn-primary" href="@Model.ReturnUrl" id="backBtn">Отменить</a>
+            </div>
+        </form>
+    </div>
+</div>

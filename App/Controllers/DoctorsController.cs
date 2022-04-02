@@ -36,7 +36,7 @@ namespace App.Controllers
             model.Specialities = await _doctorService.GetSpecialities().Select(x => x.Name).ToListAsync();
             model.Doctors = await _doctorService.GetDoctors().ToListAsync();
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]

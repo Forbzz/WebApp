@@ -89,10 +89,10 @@ namespace App.Controllers
 
         public async Task<IActionResult> Edit(string id, string returnUrl)
         {
-            var model = new PacientInfoViewModel
+            var model = new PacientEditViewModel
             {
                 Pacient = await _pacientService.GetPacientByIdAsync(id, true, false, true),
-                returnUrl = returnUrl
+                ReturnUrl = returnUrl
             };
 
             if(model.Pacient.BirthDay == null)

@@ -1,0 +1,85 @@
+﻿@model DoctorEditViewModel
+@{
+    @ViewData["Title"];
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="row">
+            <a asp-controller="Users" asp-action="ChangeSchedule" asp-route-returnUrl="@currentUrl"
+               asp-route-id="@Model.EditModel.Id" class="btn btn-primary float-end">
+                Изменить график работы
+            </a>
+            <a asp-controller="Users" asp-action="ChangeAddress" asp-route-id="@Model.EditModel.Id"
+               asp-route-returnUrl="@currentUrl" class="btn btn-primary">
+                Измеить адресс
+            </a>
+        </div>
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.EditModel.Id" />
+            <input type="hidden" asp-for="@Model.EditModel.Role" />
+            <input type="hidden" asp-for="@Model.ReturnUrl" />
+            <div class="form-group">
+                <label asp-for="@Model.EditModel.Name1"></label>
+                <input asp-for="@Model.EditModel.Name1" class="form-control" />
+                <span asp-validation-for="@Model.EditModel.Name1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EditModel.Name2"></label>
+                <input asp-for="@Model.EditModel.Name2" class="form-control" />
+                <span asp-validation-for="@Model.EditModel.Name2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EditModel.Name3"></label>
+                <input asp-for="@Model.EditModel.Name3" class="form-control" />
+                <span asp-validation-for="@Model.EditModel.Name3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EditModel.Branch"></label>
+                <input list="branchlist" asp-for="@Model.EditModel.Branch" class="form-control" />
+                <datalist id="branchlist">
+                    @foreach (var branch in Model.EditModel.Branches)
+                    {
+                        <option value="@branch"></option>
+                    }
+                </datalist>
+                <span asp-validation-for="@Model.EditModel.Branch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EditModel.Speciality"></label>
+                <input list="speclist" asp-for="@Model.EditModel.Speciality" class="form-control" />
+                <datalist id="speclist">
+                    @foreach (var spec in Model.EditModel.Specialities)
+                    {
+                        <option value="@spec"></option>
+                    }
+                </datalist>
+                <span asp-validation-for="@Model.EditModel.Branch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EditModel.ContactEmail"></label>
+                <input asp-for="@Model.EditModel.ContactEmail" class="form-control" />
+                <span asp-validation-for="@Model.EditModel.ContactEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EditModel.ContactPhoneNumber"></label>
+                <input asp-for="@Model.EditModel.ContactPhoneNumber" class="form-control" />
+                <span asp-validation-for="@Model.EditModel.ContactPhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EditModel.CabinetNumber"></label>
+                <input asp-for="@Model.EditModel.CabinetNumber" class="form-control" />
+                <span asp-validation-for="@Model.EditModel.CabinetNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+                
+                <a class="btn btn-primary" href="@Model.ReturnUrl" id="backBtn">Отменить</a>
+            </div>
+        </form>
+    </div>
+</div>

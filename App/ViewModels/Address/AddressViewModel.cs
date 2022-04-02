@@ -12,7 +12,7 @@ namespace App.ViewModels.Address
         [Display(Name = "Страна")]
         public string Country { get; set; }
 
-        [Required]
+
         [Display(Name = "Область")]
         public string Region { get; set; }
 
@@ -36,7 +36,7 @@ namespace App.ViewModels.Address
         [Display(Name = "Номер квартиры")]
         public string ApartmentNumber { get; set; }
 
-        [Required]
+
         [Display(Name = "Почтовый индекс")]
         [DataType(DataType.PostalCode)]
         public int? PostalCode { get; set; }

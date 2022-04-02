@@ -1,0 +1,42 @@
+﻿@model EditScheduleViewModel
+
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+<div class="row">
+<div class="col-md-4">
+    <form asp-action="EditSchedule" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="@Model.Schedule.Id" />
+        <input type="hidden" asp-for="@Model.DocId" />
+        <input type="hidden" asp-for="@Model.returnUrl" />
+        <div class="form-group">
+            <label asp-for="@Model.Schedule.DayOfWeek"></label>
+            <select asp-for="@Model.Schedule.DayOfWeek">
+                <option value="@DayOfWeek.Monday">Понедельник</option>
+                <option value="@DayOfWeek.Tuesday">Вторник</option>
+                <option value="@DayOfWeek.Wednesday">Среда</option>
+                <option value="@DayOfWeek.Thursday">Четверг</option>
+                <option value="@DayOfWeek.Friday">Пятница</option>
+                <option value="@DayOfWeek.Saturday">Суббота</option>
+                <option value="@DayOfWeek.Sunday">Воскресенье</option>
+            </select>
+            <span asp-validation-for="@Model.Schedule.DayOfWeek" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Schedule.Time"></label>
+            <input asp-for="@Model.Schedule.Time" class="form-control" />
+            <span asp-validation-for="@Model.Schedule.Time" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Schedule.Duration"></label>
+            <input asp-for="@Model.Schedule.Duration" class="form-control" />
+            <span asp-validation-for="@Model.Schedule.Duration" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a class="btn btn-primary" href="@Model.returnUrl">Отмена</a>
+    </form>
+</div>
+</div>

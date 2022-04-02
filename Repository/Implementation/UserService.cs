@@ -28,12 +28,16 @@ namespace Repository.Implementation
         public async Task EditUserAddress(string userId, string apartmentNumber, string country,
             string district, string homeNumber, int? postalCode, string region, string street, string town)
         {
-            var address = await _dbContext.Addresses.Where(x => x.User.Id == userId)
-                .Include(x => x.Country).Include(x => x.District)
+            var address = await _dbContext.Addresses.Where(x => x.User.Id == userId).FirstOrDefaultAsync();
+                //.Include(x => x.Country).Include(x => x.District)
                 //.Include(x => x.Country).Include(x => x.District).Include(x => x.Region)
-                .Include(x => x.Street).Include(x => x.Town).FirstOrDefaultAsync();
+                //.Include(x => x.Street).Include(x => x.Town).FirstOrDefaultAsync();
             address.ApartmentNumber = apartmentNumber;
             address.HomeNumber = homeNumber;
+            address.Street = street;
+            address.Country = country;
+            address.District = district;
+            address.Town = town;
 
             //if (address?.Country != country)
             //    address.Country = await AddCountry(country);
@@ -116,10 +120,10 @@ namespace Repository.Implementation
 
         public async Task<Address> GetUserAddress(string userId)
         {
-            var adress = await _dbContext.Addresses.Where(x => x.User.Id == userId)
+            var adress = await _dbContext.Addresses.Where(x => x.User.Id == userId).FirstOrDefaultAsync();
                 //.Include(x => x.Country).Include(x => x.District).Include(x => x.Region)
-                .Include(x => x.Country).Include(x => x.District)
-                .Include(x => x.Street).Include(x => x.Town).FirstOrDefaultAsync();
+                //.Include(x => x.Country).Include(x => x.District)
+                //.Include(x => x.Street).Include(x => x.Town).FirstOrDefaultAsync();
             return adress;
         }
 

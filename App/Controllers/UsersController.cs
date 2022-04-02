@@ -111,11 +111,11 @@ namespace App.Controllers
                 }
                 else if (model.Role == "Doctor")
                 {
-                    result = await _identityService.CreateUser<AppUser>(model.Email, model.Password, model.Role);
+                    result = await _identityService.CreateUser<Doctor>(model.Email, model.Password, model.Role);
                 }
                 else if (model.Role == "Pacient")
                 {
-                    result = await _identityService.CreateUser<AppUser>(model.Email, model.Password, model.Role);
+                    result = await _identityService.CreateUser<Pacient>(model.Email, model.Password, model.Role);
                 }
 
                 if (result.Succeeded)
@@ -365,7 +365,7 @@ namespace App.Controllers
                 //PostalCode = address?.PostalCode,
                 //Region = address?.Region?.Name,
                 Street = address?.Street,
-                Town = address?.Street
+                Town = address?.Town
             };
             return View(vm);
         }

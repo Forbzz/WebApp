@@ -30,12 +30,12 @@ namespace Repository.Implementation
             if (includeContacts)
                 query = query.Include(x => x.Contacts);
             if (includeAddress)
-                query = query.Include(x => x.Address)
-                    .Include(x => x.Address.Country)
-                    //.Include(x => x.Address.Region)
-                    .Include(x => x.Address.District)
-                    .Include(x => x.Address.Street)
-                    .Include(x => x.Address.Town);
+                query = query.Include(x => x.Address);
+                    //.Include(x => x.Address.Country)
+                    ////.Include(x => x.Address.Region)
+                    //.Include(x => x.Address.District)
+                    //.Include(x => x.Address.Street)
+                    //.Include(x => x.Address.Town);
             if (includeCard)
                 query = query.Include(x => x.Card);
             return await query.FirstOrDefaultAsync();
@@ -53,12 +53,12 @@ namespace Repository.Implementation
             }
             if (includeAddress)
             {
-                query = query.Include(x => x.Address)
-                    .Include(x => x.Address.Country)
-                    //.Include(x => x.Address.Region)
-                    .Include(x => x.Address.District)
-                    .Include(x => x.Address.Street)
-                    .Include(x => x.Address.Town);
+                query = query.Include(x => x.Address);
+                    //.Include(x => x.Address.Country)
+                    ////.Include(x => x.Address.Region)
+                    //.Include(x => x.Address.District)
+                    //.Include(x => x.Address.Street)
+                    //.Include(x => x.Address.Town);
             }
 
             if (skip > 0)
@@ -82,12 +82,12 @@ namespace Repository.Implementation
             var query = _dbContext.Pacients.AsQueryable();
             if (includeAddress)
             {
-                query = query.Include(x => x.Address)
-                    .Include(x => x.Address.Country)
-                    .Include(x => x.Address.District)
-                    //.Include(x => x.Address.Region)
-                    .Include(x => x.Address.Street)
-                    .Include(x => x.Address.Town);
+                query = query.Include(x => x.Address);
+                    //.Include(x => x.Address.Country)
+                    //.Include(x => x.Address.District)
+                    ////.Include(x => x.Address.Region)
+                    //.Include(x => x.Address.Street)
+                    //.Include(x => x.Address.Town);
             }
             if (includeCard)
             {

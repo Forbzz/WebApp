@@ -1,0 +1,95 @@
+﻿@model ChangeScheduleViewModel
+
+@{ 
+    ViewData["Title"] = "Расписание";
+    var culture = System.Globalization.CultureInfo.GetCultureInfo("ru");
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<div class="row mb-2">
+    <div class="col">
+        <h3 class="text-center">Расписание доктора @Model.Doctor?.Name1 @Model.Doctor?.Name2 @Model.Doctor?.Name3</h3>
+    </div>
+    <div class="col d-flex align-items-center justify-content-end">
+        <a href="@Model.ReturnUrl" class="btn btn-primary">Назад</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">День недели</th>
+                    <th scope="col">Начало</th>
+                    <th scope="col">Продолжительность</th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th scope="col">Действия</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+            @foreach(var sch in Model.Schedules)
+            {
+                <tr>
+                    <td>@culture.DateTimeFormat.GetDayName(sch.DayOfWeek)</td>
+                    <td>@sch.Time</td>
+                    <td>@sch.Duration</td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <div class="btn-group">
+                            <a class="bth btn-primary btn-sm m-0 me-1" asp-action="EditSchedule" asp-route-id="@sch.Id"
+                               asp-route-docId="@Model.DoctorId" asp-route-returnUrl="@currentUrl">Изменить</a>
+                            <a class="bth btn-danger btn-sm m-0" asp-action="DeleteSchedule" asp-route-id="@sch.Id"
+                               asp-route-docId="@Model.DoctorId" asp-route-returnUrl="@Model.ReturnUrl">Удалить</a>
+                        </div>
+                    </td>
+                }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+@if (User.IsInRole("Admin"))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddSchedule" asp-route-docId="@Model.DoctorId"
+                  asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="@Model.DoctorId"/>
+                    <label asp-for="@Model.DayOfWeek"></label>
+                    <select asp-for="@Model.DayOfWeek">
+                        <option value="@DayOfWeek.Monday">Понедельник</option>
+                        <option value="@DayOfWeek.Tuesday">Вторник</option>
+                        <option value="@DayOfWeek.Wednesday">Среда</option>
+                        <option value="@DayOfWeek.Thursday">Четверг</option>
+                        <option value="@DayOfWeek.Friday">Пятница</option>
+                        <option value="@DayOfWeek.Saturday">Суббота</option>
+                        <option value="@DayOfWeek.Sunday">Воскресенье</option>
+                    </select>
+                    <span asp-validation-for="@Model.DayOfWeek" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Time"></label>
+                    <input asp-for="@Model.Time" class="form-control"/>
+                    <span asp-validation-for="@Model.Time" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Duration"></label>
+                    <input asp-for="@Model.Duration" class="form-control"/>
+                    <span asp-validation-for="@Model.Duration" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Сохранить"/>
+                </div>
+            </form>
+        </div>
+    </div>
+}

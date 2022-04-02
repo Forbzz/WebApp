@@ -1,0 +1,129 @@
+﻿@model DoctorSearchViewModel
+@{
+    ViewData["Title"] = "Doctors";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<form asp-action="Index" method="post">
+    <div class="form-group row">
+        <div class="col-6">
+            <label asp-for="@Model.Name"></label>
+            <input asp-for="@Model.Name" class="form-control mr-sm-2" type="text" placeholder="Имя" aria-label="Имя" />
+        </div>
+        <div class="col">
+            <label asp-for="@Model.Branch"></label>
+            <select asp-for="@Model.Branch" class="form-select">
+                <option value="">Отделение</option>
+                @foreach (var bra in Model.Branches)
+                {
+                    <option value="@bra">@bra</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label asp-for="@Model.Speciality"></label>
+            <select asp-for="@Model.Speciality" class="form-select">
+                <option value="">Специальность</option>
+                @foreach (var spec in Model.Specialities)
+                {
+                    <option value="@spec">@spec</option>
+                }
+            </select>
+        </div>
+        <div class="col d-flex align-self-end justify-content-end">
+            <input type="submit" class="btn btn-outline-primary" value="Search" />
+        </div>
+    </div>
+</form>
+
+@if (Model.Doctors.Count() > 0)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                @*<th scope="col">#</th>*@
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Отчество</th>
+                <th>Телефон</th>
+                <th>Почта</th>
+                <th>Отделение</th>
+                <th>Специальность</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var doctor in Model.Doctors)
+            {
+                <tr>
+                    @*<td>@doctor.Id</td>*@
+                    <td>@doctor.Name1</td>
+                    <td>@doctor.Name2</td>
+                    <td>@doctor.Name3</td>
+                    <td>@doctor.PhoneNumber</td>
+                    <td>@doctor.Email</td>
+                    <td>@doctor.Branch?.Name</td>
+                    <td>@doctor.Speciality?.Name</td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                        <div class="btn-group">
+                            <a class="btn btn-primary" asp-action="Details" asp-route-id="@doctor.Id"
+                               asp-route-returnUrl="@currentUrl">Детальная информация</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-primary" asp-controller="Users" asp-action="ChangeSchedule"
+                                   asp-route-id="@doctor.Id" asp-route-returnUrl="@currentUrl">График работы</a>
+                                <a class="btn btn-danger deleteBtn" asp-controller="Users"
+                                   asp-action="Remove" asp-route-id="@doctor.Id">Удалить</a>
+
+                                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@doctor.Id" 
+                                   asp-route-returnUrl="@currentUrl">Изменить</a>
+                                <a class="btn btn-primary" asp-controller="Doctors" asp-action="Stats"
+                                   asp-route-id="@doctor.Id" asp-route-returnUrl="@currentUrl">Статистика</a>
+                                <a class="btn btn-primary" asp-controller="Home" asp-action="DoctorTickets" 
+                                   asp-route-id="@doctor.Id" asp-route-returnUrl="@currentUrl">Талоны</a>
+                            }
+                            @if (User.IsInRole("Pacient"))
+                            {
+                                <a class="btn btn-primary" asp-controller="Home" asp-action="Schedule"
+                                   asp-route-id="@doctor.Id" asp-route-returnUrl="@currentUrl">Запись на прием</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center">
+        <br />
+        <h4>Доктора с такими параметрами не найдены</h4>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            $('a.deleteBtn').click((e) => {
+                e.preventDefault();
+                href = e.target.href;
+                bootbox.confirm("Удалить доктора. Вы уверены?", function (result) {
+                    if (result) {
+                        $.get(href).done(function (data) {
+                            if (data.status == "success") {
+                                document.location.reload();
+                            }
+                            else {
+                                bootbox.alert(data.error);
+                            }
+                        });
+                    }
+                })
+            })
+        })
+    </script>
+}

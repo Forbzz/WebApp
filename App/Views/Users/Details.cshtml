@@ -1,0 +1,82 @@
+﻿@model AdminViewModel
+@{
+    ViewData["Title"] = "Info";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+<div>
+    <h2>
+        @Model?.User?.Name1 @Model?.User?.Name2 @Model?.User?.Name3
+        <a class="btn btn-primary float-right" href="@Model.ReturnUrl">Назад</a>
+    </h2>
+
+</div>
+<br />
+
+<div>
+    <h6>Контактные данные</h6>
+    <br />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(x => x.User.Contacts.Mail)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Contacts.Mail)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Contacts.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Contacts.Phone)
+        </dd>
+    </dl>
+    <br />
+    <h6>Адрес</h6>
+    <br />
+    <dl class="row text-body text-black-50">
+        @Model.User?.Address?.Country,  @Model.User?.Address область, @Model.User?.Address?.District район,
+        г. @Model.User?.Address?.Town, ул. @Model.User?.Address?.Street д. @Model.User?.Address?.HomeNumber,
+        @if (!string.IsNullOrEmpty(Model.User?.Address?.ApartmentNumber))
+        {
+            <text>
+                кв. Model.User?.Address?.ApartmentNumber
+            </text>
+        }
+    </dl>
+</div>
+
+<div class="row">
+    <div class="btn-group">
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.User.Id"
+               asp-route-returnUrl="@currentUrl">Изменить</a>
+            <a class="btn btn-danger deleteBtn" asp-controller="Users"
+               asp-action="Remove" asp-route-id="@Model.User.Id">Удалить</a>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            $('a.deleteBtn').click((e) => {
+                e.preventDefault();
+                href = e.target.href;
+                bootbox.confirm("Удалить пользователя. Вы уверены?", function (result) {
+                    if (result) {
+                        $.get(href).done(function (data) {
+                            if (data.status == "success") {
+                                location.href = '@Model.ReturnUrl';
+                            }
+                            else {
+                                bootbox.alert(data.error);
+                            }
+                        });
+                    }
+                })
+            })
+        })
+    </script>
+}
