@@ -15,7 +15,7 @@
             </a>
             <a asp-controller="Users" asp-action="ChangeAddress" asp-route-id="@Model.EditModel.Id"
                asp-route-returnUrl="@currentUrl" class="btn btn-primary">
-                Измеить адресс
+                Измеить адрес
             </a>
         </div>
         <form asp-action="Edit" method="post">
@@ -73,7 +73,7 @@
             <div class="form-group">
                 <label asp-for="@Model.EditModel.CabinetNumber"></label>
                 <input asp-for="@Model.EditModel.CabinetNumber" class="form-control" />
-                <span asp-validation-for="@Model.EditModel.CabinetNumber" class="text-danger"></span>
+                <span asp-validation-for="@Model.EditModel.CabinetNumber" class="text-danger">Номер кабинета</span>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Сохранить</button>

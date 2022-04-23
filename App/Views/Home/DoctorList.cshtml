@@ -1,0 +1,24 @@
+﻿@model HomeDoctorsViewModel
+@{
+    ViewData["Title"] = "Доктора";
+}
+
+<h3 class="mb-1 text-center">Выберите доктора</h3>
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            @foreach (var card in Model.Doctors)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-1">
+                        <div class="card-body">
+                            <h4 class="card-title">@($"{card?.Name1} {card?.Name2} {card?.Name3}")</h4>
+                            <p class="card-subtitle">кабинет @card.Cabinet?.Number</p>
+                            <a class="stretched-link" asp-action="Schedule" asp-route-id="@card.Id"></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

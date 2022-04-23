@@ -1,0 +1,61 @@
+﻿@model TicketsViewModel
+@{
+    ViewData["Title"] = "Талоны";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<div>
+    <h3 class="mb-1 text-center">@Model.Header</h3>
+    @if (!string.IsNullOrEmpty(Model.ReturnUrl))
+    {
+        <a class="btn btn-primary float-right" href="@Model.ReturnUrl">Back</a>
+    }
+</div>
+<partial name="_StatusMessage" for="StatusModel" />
+<div class="py-5">
+    <div class="container">
+        <table class="table">
+            <tr>
+                @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+                {
+                    <th>Пациент</th>
+                }
+                @if (User.IsInRole("Admin") || User.IsInRole("Pacient"))
+                {
+                    <th>Доктор</th>
+                    <th>Кабинет</th>
+                }
+                <th>Дата</th>
+                <th>Время</th>
+                <th>Действия</th>
+            </tr>
+            @foreach (var ticket in Model.Tickets)
+            {
+                <tr>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+                    {
+                        <td>@ticket.Pacient?.Name1 @ticket.Pacient?.Name2 @ticket.Pacient?.Name3</td>
+                    }
+                    @if (User.IsInRole("Admin") || User.IsInRole("Pacient"))
+                    {
+                        <td>@ticket.Schedule.Doctor?.Name1 @ticket.Schedule.Doctor?.Name2 @ticket.Pacient?.Name3</td>
+                        <td>@ticket.Schedule.Doctor?.Cabinet?.Number</td>
+                    }
+                    <td>@ticket.TicketDate</td>
+                    <td>@ticket.Schedule.Time</td>
+                    <td>
+                        <a type="submit" asp-controller="Home" asp-action="DeleteTicket"
+                           asp-route-id="@ticket.Id" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-danger">Delete</a>
+                        @if (User.IsInRole("Doctor") || User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-primary" asp-controller="Card" asp-action="Index" asp-route-id="@ticket.Pacient.Id" asp-route-returnUrl="@currentUrl">Карточка</a>
+                            <a class="btn btn-primary" asp-action="CloseTicket" asp-route-id="@ticket.Id" asp-route-userId="@Model.userId" asp-route-returnUrl="@Model.ReturnUrl">Закрыть талон</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -1,7 +1,110 @@
 ﻿@{
     ViewData["Title"] = "Начало";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
 }
-
-<div class="text-center">
-
+<div class="row mb-2">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col-md-6">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5 class="card-title">Пациенты</h5>
+                    <a class="btn btn-primary stretched-link" asp-controller="Pacients" asp-action="Index"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5 class="card-title">Доктора</h5>
+                    <a class="btn btn-primary stretched-link" asp-controller="Doctors" asp-action="Index"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5 class="card-title">Пользователи</h5>
+                    <a class="btn btn-primary stretched-link" asp-controller="Users" asp-action="Index"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5 class="card-title">Статистика</h5>
+                    <a class="btn btn-primary stretched-link" asp-controller="Stats" asp-action="Index"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5 class="card-title">Услуги</h5>
+                    <a class="btn btn-primary stretched-link" asp-controller="Services" asp-action="Index"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                </div>
+            </div>
+        </div>
+    }
+    else if (User.IsInRole("Doctor"))
+    {
+        <div class="col-md-6">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5 class="card-title">Пациенты</h5>
+                    <a class="btn btn-primary stretched-link" asp-controller="Pacients" asp-action="Index"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5 class="card-title">Расписание</h5>
+                    <a class="btn btn-primary stretched-link" asp-controller="Users" asp-action="ChangeSchedule"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5 class="card-title">Предстоящие приемы</h5>
+                    <a class="btn btn-primary stretched-link" asp-controller="Home" asp-action="DoctorTickets"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-6">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5 class="card-title">Запись на прием</h5>
+                    <a class="btn btn-primary stretched-link" asp-controller="Home" asp-action="Specialities"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                </div>
+            </div>
+        </div>
+        @if (User.IsInRole("Pacient"))
+        {
+            <div class="col-md-6">
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <h5 class="card-title">Талоны</h5>
+                        <a class="btn btn-primary stretched-link" asp-controller="Home" asp-action="PacientTickets"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
 </div>
