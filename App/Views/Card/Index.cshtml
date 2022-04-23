@@ -1,0 +1,87 @@
+﻿@model CardViewModel
+@{
+    ViewData["Title"] = "Карта";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<div>
+    <h4>Карта №@Model.Card.Id</h4>
+    <h5>@Model.Pacient?.Name1 @Model?.Pacient?.Name2 @Model.Pacient?.Name3</h5>
+    <a class="btn btn-primary float-right" href="@Model.ReturnUrl">Назад</a>
+    <br />
+    <h6>Дата выдачи: @Model?.Card?.DateOfIssue</h6>
+    <br />
+    <h6>Дата рождения: @Model?.Pacient?.BirthDay</h6>
+    <br />
+    <h6>Пол: 
+    @if (Model?.Pacient?.Male == Gender.Male)
+    {
+        <text>
+            Мужской
+        </text>
+    }
+    else
+    {
+        <text>
+            Женский
+        </text>
+    }
+    </h6>
+    <br />
+    <h6>Контактные данные</h6>
+    <br />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(x => x.Pacient.Contacts.Mail)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Pacient.Contacts.Mail)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Pacient.Contacts.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Pacient.Contacts.Phone)
+        </dd>
+    </dl>
+    <br />
+    <dl class="row">
+        <dt>
+            <span class="h4 mr-2">Адресс:</span>
+        </dt>
+        <dd>
+            @Model.Pacient?.Address?.Country, @Model.Pacient?.Address?.District район,
+            г. @Model.Pacient?.Address?.Town ул. @Model.Pacient?.Address?.Street д. @Model.Pacient?.Address?.HomeNumber
+            @if (!string.IsNullOrEmpty(Model.Pacient?.Address?.ApartmentNumber))
+            {
+                <text>
+                    , кв. @Model.Pacient?.Address?.ApartmentNumber
+                </text>
+            }
+        </dd>
+    </dl>
+</div>
+
+<br />
+<div class="row">
+    <div class="col">
+        <div class="btn-group">
+            <a asp-action="Search" asp-route-id="@Model.Pacient.Id" asp-route-returnUrl="@currentUrl"
+               class="btn btn-primary mr-1">Поиск</a>
+            <a asp-action="Allergies" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" class="btn btn-primary mr-1">Аллергии</a>
+            <a asp-action="Diagnoses" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" class="btn btn-primary mr-1">Диагнозы</a>
+            <a asp-action="Vaccinations" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" class="btn btn-primary mr-1" >Вакцинации</a>
+            <a asp-action="Examinations" class="btn btn-primary mr-1"
+               asp-route-id="@Model.Pacient.Id" asp-route-returnUrl="@currentUrl">Посещения</a>
+            <a asp-action="DiagnoseHistory" class="btn btn-primary mr-1"
+               asp-route-id="@Model.Pacient.Id" asp-route-returnUrl="@currentUrl">Заключения</a>
+            <a asp-action="Recommendations" class="btn btn-primary mr-1"
+               asp-route-id="@Model.Pacient.Id" asp-route-returnUrl="@currentUrl">Рекомендации</a>
+        </div>
+    </div>
+</div>

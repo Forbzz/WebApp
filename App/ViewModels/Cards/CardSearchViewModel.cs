@@ -12,7 +12,7 @@ namespace App.ViewModels.Cards
         public int AllrgeysCount { get; set; }
         public int ExaminationsCount { get; set; }
         public int VaccinationsCount { get; set; }
-        public int DiggnosesCount { get; set; }
+        public int DiagnosesCount { get; set; }
         public int DiagnoseHistoryCount { get; set; }
         public int ReccomendationsCount { get; set; }
         public IEnumerable<DiagnoseHistory> DiagnoseHistories { get; set; }
