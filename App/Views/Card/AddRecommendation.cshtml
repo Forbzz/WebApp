@@ -1,5 +1,33 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AddRecommendationViewModel
 @{
+    ViewData["Title"] = "Рекомендация";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
 }
+
+<h4>Добавить рекомендацию</h4>
+<form asp-action="AddRecommendation" method="post">
+    <div asp-validation-summary="All"></div>
+    <input type="hidden" asp-for="@Model.ReturnUrl" />
+    <input type="hidden" asp-for="@Model.PacientId" />
+    <div class="form-group">
+        <label asp-for="@Model.Recommendation.Type"></label>
+        <input asp-for="@Model.Recommendation.Type" class="form-control" />
+        <span asp-validation-for="@Model.Recommendation.Type" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Recommendation.Descripton">Рекомендация</label>
+        <textarea asp-for="@Model.Recommendation.Descripton" class="form-control"></textarea>
+        <span asp-validation-for="@Model.Recommendation.Descripton" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Recommendation.End"></label>
+        <input asp-for="@Model.Recommendation.End" class="form-control" />
+        <span asp-validation-for="@Model.Recommendation.End" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Добавить</button>
+        <a class="btn btn-primary" href="@Model.ReturnUrl">Отменить</a>
+    </div>
+</form>

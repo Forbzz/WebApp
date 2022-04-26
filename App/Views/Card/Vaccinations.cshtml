@@ -1,5 +1,58 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model VaccinationsViewModel
 @{
+    ViewData["Title"] = "Вакцинация";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<form asp-action="Vaccinations" method="post">
+    <input type="hidden" asp-for="@Model.PacientId" />
+    <input type="hidden" asp-for="@Model.ReturnUrl" />
+
+    <div class="d-flex flex-row">
+        <input id="search-input" placeholder="Search" type="search" asp-for="@Model.Search" />
+        <button id="search-button" type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+        </button>
+        <a class="btn btn-primary ml-auto" href="@Model.ReturnUrl">Назад</a>
+    </div>
+</form>
+
+<br />
+<div>
+    <h5>
+        Вакцинации
+        @if (User.IsInRole("Doctor") || User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary float-right" asp-action="AddVaccine" asp-route-returnUrl="@currentUrl"
+               asp-route-id="@Model.PacientId">Добавить</a>
+        }
+    </h5>
+</div>
+<br />
+@if (Model.Vaccinations.Count() > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Тип</th>
+            <th>Результат</th>
+            <th>Дата</th>
+        </tr>
+        @foreach (var vaccine in Model.Vaccinations)
+        {
+            <tr>
+                <td>@vaccine.Vaccination.Type</td>
+                <td>@vaccine.Result</td>
+                <td>@vaccine.Date</td>
+            </tr>
+        }
+    </table>
+    <br />
+}
+else
+{
+    <div class="text-center">
+        Нет вакцинаций
+    </div>
 }

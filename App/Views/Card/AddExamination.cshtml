@@ -1,5 +1,28 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AddExaminationViewModel
 @{
+    ViewData["Title"] = "Осмотр";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
 }
+
+<h4>Осмотр</h4>
+<form asp-action="AddExamination" method="post">
+    <div asp-validation-summary="All"></div>
+    <input type="hidden" asp-for="@Model.ReturnUrl" />
+    <input type="hidden" asp-for="@Model.PacientId" />
+    <div class="form-group">
+        <label asp-for="@Model.Examination.Type"></label>
+        <input asp-for="@Model.Examination.Type" class="form-control" />
+        <span asp-validation-for="@Model.Examination.Type" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Examination.Result"></label>
+        <textarea asp-for="@Model.Examination.Result" class="form-control"></textarea>
+        <span asp-validation-for="@Model.Examination.Result" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Добавить</button>
+        <a class="btn btn-primary" href="@Model.ReturnUrl">Отменить</a>
+    </div>
+</form>

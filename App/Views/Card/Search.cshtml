@@ -1,5 +1,319 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CardSearchViewModel
 @{
+    ViewData["Title"] = "Поиск";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<form asp-action="Search">
+    <input type="hidden" asp-for="@Model.Pacient.Id" />
+    <input type="hidden" asp-for="@Model.Card.Id" />
+    <input type="hidden" asp-for="@Model.ReturnUrl" />
+
+    <div class="d-flex flex-row">
+        <input id="search-input" placeholder="Search" type="search" asp-for="@Model.Search" />
+        <button id="search-button" type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+        </button>
+        <a class="btn btn-primary ml-auto" href="@Model.ReturnUrl">Назад</a>
+    </div>
+</form>
+
+<br />
+
+<div>
+    <h5>
+        <a asp-action="Allergies" asp-route-id="@Model.Pacient.Id"
+           asp-route-returnUrl="@currentUrl">Аллергии</a>
+        @if (Model.AllrgeysCount > 10)
+        {
+            <a class="btn btn-primary float-right" asp-action="Allergies" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" asp-route-search="@Model.Search">Показать больше</a>
+        }
+    </h5>
+</div>
+<br />
+@if (Model.Card.Allergies.Count > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Тип</th>
+            <th>Дата появления</th>
+        </tr>
+        @foreach (var allergy in Model.Card.Allergies)
+        {
+            <tr>
+                <td>@allergy.Type</td>
+                <td>@allergy.DateOfIssue</td>
+            </tr>
+        }
+    </table>
+    <br />
+}
+else
+{
+    <div class="text-center">
+        Нет Аллергий
+    </div>
+}
+
+<br />
+
+<div>
+    <h5>
+        <a asp-action="Vaccinations" asp-route-id="@Model.Pacient.Id"
+           asp-route-returnUrl="@currentUrl">Вакцинации</a>
+        @if (Model.VaccinationsCount > 10)
+        {
+            <a class="btn btn-primary float-right" asp-action="Vaccinations" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" asp-route-search="@Model.Search">Показать больше</a>
+        }
+    </h5>
+</div>
+<br />
+@if (Model.Card.Vaccinations.Count > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Тип</th>
+            <th>Результат</th>
+            <th>Дата</th>
+        </tr>
+        @foreach (var vaccine in Model.Card.Vaccinations)
+        {
+            <tr>
+                <td>@vaccine.Vaccination.Type</td>
+                <td>@vaccine.Result</td>
+                <td>@vaccine.Date</td>
+            </tr>
+        }
+    </table>
+    <br />
+}
+else
+{
+    <div class="text-center">
+        Нет вакцинаций
+    </div>
+}
+
+<br />
+
+<div>
+    <h5>
+        <a asp-action="Examinations" asp-route-id="@Model.Pacient.Id"
+           asp-route-returnUrl="@currentUrl">Посещения врача</a>
+        @if (Model.ExaminationsCount > 10)
+        {
+            <a class="btn btn-primary float-right" asp-action="Examinations" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" asp-route-search="@Model.Search">Показать больше</a>
+        }
+    </h5>
+</div>
+<br />
+@if (Model.Card.Examinations.Count > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Тип</th>
+            <th>Дата</th>
+            <th>Доктор</th>
+            <th>Результат</th>
+        </tr>
+        @foreach (var vaccine in Model.Card.Examinations)
+        {
+            <tr>
+                <td>@vaccine.Type</td>
+                <td>@vaccine.ExaminationDate</td>
+                <td>@vaccine?.Doctor?.Name1 @vaccine?.Doctor?.Name2 @vaccine?.Doctor?.Name3</td>
+                <td>@vaccine.Result</td>
+            </tr>
+        }
+    </table>
+    <br />
+}
+else
+{
+    <div class="text-center">
+        Нет посещений
+    </div>
+}
+
+<br />
+<div>
+    <h5>
+        <a asp-action="Diagnoses" asp-route-id="@Model.Pacient.Id"
+           asp-route-returnUrl="@currentUrl">Диагнозы</a>
+        @if (Model.DiagnosesCount > 10)
+        {
+            <a class="btn btn-primary float-right" asp-action="Diagnoses" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" asp-route-search="@Model.Search">Показать больше</a>
+        }
+    </h5>
+</div>
+<br />
+@if (Model.Card.Diagnoses.Count() > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Врач</th>
+            <th>Диагноз</th>
+            <th>Поставлен</th>
+            <th>Статус</th>
+            <th>Подтверждено</th>
+            <th>Дата подтверждения</th>
+            <th>Действия</th>
+        </tr>
+        @foreach (var diagnose in Model.Card.Diagnoses)
+        {
+            <tr>
+                <td>
+                    @diagnose?.DoctorEstablishe?.Name1 @diagnose?.DoctorEstablishe?.Name2
+                    @diagnose?.DoctorEstablishe?.Name3
+                </td>
+                <td>@diagnose.Name</td>
+                <td>@diagnose.EstablisheDate</td>
+                @if (!diagnose.Status)
+                {
+                    <td>Не подтвержден</td>
+                    <td colspan="2">
+                        <a class="btn btn-primary" asp-action="ConfirmDiagnose"
+                           asp-route-id="@diagnose.Id" asp-route-returnUrl="@currentUrl">
+                            Подтвердить
+                        </a>
+                    </td>
+                }
+                else
+                {
+                    <td>Подтвержден</td>
+                    <td>
+                        @diagnose?.DoctorConfirm?.Name1 @diagnose?.DoctorConfirm?.Name2
+                        @diagnose?.DoctorConfirm?.Name3
+                    </td>
+                    <td>@diagnose?.ConfirmDate.Value</td>
+                    
+                }
+                <td>
+                    <a class="btn btn-primary" asp-action="DiagnoseHistory" asp-route-id="@Model.Pacient.Id"
+                       asp-route-diagnoseId="@diagnose.Id" asp-route-returnUrl="@currentUrl">К истории</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="text-center">
+        Нет диагнозов
+    </div>
+}
+@*<div class="btn-group">
+        <a class="btn btn-primary" asp-action="AddDiagnos" asp-route-id="@Model.Pacient.Id">Добавить диагноз</a>
+    </div>*@
+
+
+<br />
+<div>
+    <h5>
+        <a asp-action="DiagnoseHistory" asp-route-id="@Model.Pacient.Id"
+           asp-route-returnUrl="@currentUrl">Заключения</a>
+        @if (Model.DiagnoseHistoryCount > 10)
+        {
+            <a class="btn btn-primary float-right" asp-action="DiagnoseHistory" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" asp-route-search="@Model.Search">Показать больше</a>
+        }
+    </h5>
+</div>
+<br />
+@if (Model.DiagnoseHistories.Count() > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Врач</th>
+            <th>Диагноз</th>
+            <th>Заключение</th>
+            <th>Дата</th>
+            <th>Действия</th>
+        </tr>
+        @foreach (var diagnose in Model.DiagnoseHistories)
+        {
+            <tr>
+                <td>
+                    @diagnose?.Doctor?.Name1 @diagnose?.Doctor?.Name2
+                    @diagnose?.Doctor?.Name3
+                </td>
+                <td>
+                    @diagnose.Diagnose?.Name
+                </td>
+                <td>@diagnose.Conclusion</td>
+                <td>@diagnose.ConclusionDate</td>
+                <td>
+                    <a class="btn btn-primary" asp-action="DiagnoseHistory" asp-route-id="@Model.Pacient.Id"
+                       asp-route-diagnoseId="@diagnose.Diagnose.Id" asp-route-returnUrl="@currentUrl">К истории</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="text-center">
+        Нет диагнозов
+    </div>
+}
+
+<br />
+<div>
+    <h5>
+        <a asp-action="Recommendations" asp-route-id="@Model.Pacient.Id"
+           asp-route-returnUrl="@currentUrl">Рекомендации</a>
+        @if (Model.ReccomendationsCount > 10)
+        {
+            <a class="btn btn-primary float-right" asp-action="Reccomendations" asp-route-id="@Model.Pacient.Id"
+               asp-route-returnUrl="@currentUrl" asp-route-search="@Model.Search">Показать больше</a>
+        }
+    </h5>
+</div>
+<br />
+@if (Model.Card.Recommendations.Count() > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Тип</th>
+            <th>Врач</th>
+            <th>Реккомендация</th>
+            <th>Начало</th>
+            <th>Окончание</th>
+        </tr>
+        @foreach (var recommendation in Model.Card.Recommendations)
+        {
+            <tr>
+                <td>
+                    @recommendation.Type
+                </td>
+                <td>
+                    @recommendation?.Doctor?.Name1 @recommendation?.Doctor?.Name2
+                    @recommendation?.Doctor?.Name3
+                </td>
+                <td>@recommendation.Descripton</td>
+                <td>@recommendation.Start</td>
+                @if(recommendation.End.HasValue)
+                {
+                    <td>@recommendation.End.Value</td>
+                }
+                else
+                {
+                    <td>-</td>
+                }
+                
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="text-center">
+        Нет реккомендаций
+    </div>
 }

@@ -490,9 +490,9 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public IActionResult Reccomendations(RecommendationViewModel model)
+        public IActionResult Recommendations(RecommendationViewModel model)
         {
-            return RedirectToAction(nameof(Reccomendations), new
+            return RedirectToAction(nameof(Recommendations), new
             {
                 Id = model.PacientId,
                 returnUrl = model.ReturnUrl,
@@ -500,7 +500,7 @@ namespace App.Controllers
             });
         }
 
-        public IActionResult AddReccomendation(string Id, string returnUrl)
+        public IActionResult AddRecommendation(string Id, string returnUrl)
         {
             var model = new AddRecommendationViewModel
             {
@@ -512,7 +512,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddReccomendation(AddRecommendationViewModel model)
+        public async Task<IActionResult> AddRecommendation(AddRecommendationViewModel model)
         {
             Doctor doc = null;
             if (User.IsInRole("Doctor"))

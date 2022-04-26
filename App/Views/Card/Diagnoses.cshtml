@@ -1,5 +1,88 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model DiagnosesViewModel
 @{
+    ViewData["Title"] = "Diagnoses";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<form asp-action="Diagnoses" method="post">
+    <input type="hidden" asp-for="@Model.PacientId" />
+    <input type="hidden" asp-for="@Model.ReturnUrl" />
+
+    <div class="d-flex flex-row">
+        <input id="search-input" placeholder="Search" type="search" asp-for="@Model.Search" />
+        <button id="search-button" type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+        </button>
+        <a class="btn btn-primary ml-auto" href="@Model.ReturnUrl">Назад</a>
+    </div>
+</form>
+
+<br />
+<div>
+    <h5>
+        Даигнозы
+        @if (User.IsInRole("Doctor") || User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary float-right" asp-action="AddDiagnose" asp-route-returnUrl="@currentUrl"
+               asp-route-id="@Model.PacientId">Добавить</a>
+        }
+    </h5>
+</div>
+<br />
+@if (Model.Diagnoses?.Count() > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Врач</th>
+            <th>Диагноз</th>
+            <th>Поставлен</th>
+            <th>Статус</th>
+            <th>Подтверждено</th>
+            <th>Дата подтверждения</th>
+            <th>Действие</th>
+        </tr>
+        @foreach (var diagnose in Model.Diagnoses)
+        {
+            <tr>
+                <td>
+                    @diagnose?.DoctorEstablishe?.Name1 @diagnose?.DoctorEstablishe?.Name2
+                    @diagnose?.DoctorEstablishe?.Name3
+                </td>
+                <td>@diagnose.Name</td>
+                <td>@diagnose.EstablisheDate</td>
+                @if (!diagnose.Status)
+                {
+                    <td>Не подтвержден</td>
+                    <td colspan="2">
+                        <a class="btn btn-primary" asp-action="ConfirmDiagnose"
+                           asp-route-id="@diagnose.Id" asp-route-returnUrl="@currentUrl">
+                            Подтвердить
+                        </a>
+                    </td>
+                }
+                else
+                {
+                    <td>Подтвержден</td>
+                    <td>
+                        @diagnose?.DoctorConfirm?.Name1 @diagnose?.DoctorConfirm?.Name2
+                        @diagnose?.DoctorConfirm?.Name3
+                    </td>
+                    <td>@diagnose?.ConfirmDate.Value</td>
+                    
+                }
+                    <td>
+                        <a class="btn btn-primary" asp-route-returnUrl="@currentUrl"
+                           asp-action="DiagnoseHistory" asp-route-id="@diagnose.Card.Id" asp-route-diagnoseId="@diagnose.Id">История</a> 
+                    </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="text-center">
+        Нет диагнозов
+    </div>
 }

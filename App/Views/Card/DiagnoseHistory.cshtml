@@ -1,5 +1,90 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model DiagnoseHistoryViewModel
 @{
+    ViewData["Title"] = "Заключения";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+<form asp-action="DiagnoseHistory" method="post">
+    <input type="hidden" asp-for="@Model.PacientId" />
+    <input type="hidden" asp-for="@Model.ReturnUrl" />
+    <input type="hidden" asp-for="@Model.DiagnoseId" />
+
+    <div class="d-flex flex-row">
+        <input id="search-input" placeholder="Search" type="search" asp-for="@Model.Search" />
+        <button id="search-button" type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+        </button>
+        <a class="btn btn-primary ml-auto" href="@Model.ReturnUrl">Назад</a>
+    </div>
+</form>
+
+<br />
+<div>
+    <h5>
+        Заключения
+        @if (User.IsInRole("Doctor") || User.IsInRole("Admin") && Model.DiagnoseId.HasValue)
+        {
+            <a class="btn btn-primary float-right" asp-action="AddDiagnoseHistory" asp-route-returnUrl="@currentUrl"
+               asp-route-diagnoseId="@Model.DiagnoseId">Добавить</a>
+        }
+    </h5>
+</div>
+<br />
+@if (Model.DiagnoseId.HasValue) {
+    <div>
+        <h4>Диагноз @Model.Diagnose.Name</h4>
+        <h6>
+            Пациента @Model?.Diagnose?.Card?.Pacient?.Name1
+            @Model?.Diagnose?.Card?.Pacient?.Name2
+            @Model?.Diagnose?.Card?.Pacient?.Name3
+        </h6>
+        <h6>Карта №@Model.Diagnose?.Card?.Number</h6>
+    </div>
+    <br />
+}
+@if (Model.History?.Count() > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Врач</th>
+            <th>Заключение</th>
+            <th>Дата</th>
+            @if (Model.DiagnoseId == null)
+            {
+                <th>Диагноз</th>
+                <th>Действие</th>
+            }
+        </tr>
+        @foreach (var diagnose in Model.History)
+        {
+            <tr>
+                <td>
+                    @diagnose?.Doctor?.Name1 @diagnose?.Doctor?.Name2
+                    @diagnose?.Doctor?.Name3
+                </td>
+                <td>
+                    @diagnose.Conclusion
+                </td>
+                <td>
+                    @diagnose.ConclusionDate.ToShortDateString()
+                </td>
+                @if (Model.DiagnoseId == null)
+                {
+                    <td>@diagnose.Diagnose.Name</td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="DiagnoseHistory" asp-route-id="@Model.PacientId"
+                           asp-route-diagnoseId="@diagnose.Id" asp-route-returnUrl="@currentUrl">К истории</a>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="text-center">
+        Нет диагнозов
+    </div>
 }

@@ -1,5 +1,57 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AllergiesViewModel
 @{
+    ViewData["Title"] = "Аллергии";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
 }
+
+<form asp-action="Allergies" method="post">
+    <input type="hidden" asp-for="@Model.PacientId"/>
+    <input type="hidden" asp-for="@Model.CardId" />
+    <input type="hidden" asp-for="@Model.returnUrl" />
+
+    <div class="d-flex flex-row">
+        <input id="search-input" placeholder="Search" type="search" asp-for="@Model.Search" />
+        <button id="search-button" type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+        </button>
+        <a class="btn btn-primary ml-auto" href="@Model.returnUrl">Назад</a>
+    </div>
+</form>
+
+<br />
+<div>
+    <h5>
+        Аллергии
+        @if (User.IsInRole("Doctor") || User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary float-right" asp-action="AddAllergy" asp-route-returnUrl="@currentUrl"
+               asp-route-id="@Model.PacientId" asp-route-cardId="@Model.CardId">Добавить</a>
+        }
+    </h5>
+</div>
+<br />  
+@if (Model.Allergies.Count() > 0)
+{
+    <table class="table">
+        <tr>
+            <th>Тип</th>
+            <th>Дата появления</th>
+        </tr>
+        @foreach (var allergy in Model.Allergies)
+        {
+            <tr>
+                <td>@allergy.Type</td>
+                <td>@allergy.DateOfIssue.ToShortDateString()</td>
+            </tr>
+        }
+    </table>
+    <br />
+}
+else
+{
+    <div class="text-center">
+        <h4>Нет аллергий</h4>
+    </div>
+} 
