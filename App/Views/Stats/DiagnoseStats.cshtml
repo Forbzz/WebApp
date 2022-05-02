@@ -1,0 +1,49 @@
+﻿@model DiagnoseStatsViewModel
+@{
+    ViewData["Title"] = "Статистика";
+}
+<div>
+    <h2>
+        Статистика заболеваний
+        <a class="btn btn-primary float-right" href="@Model.ReturnUrl">Назад</a>
+    </h2>
+</div>
+<br />
+
+<form asp-action="DiagnoseStats" method="post">
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div class="form-group row">
+        <div class="col-6">
+            <label asp-for="Start"></label>
+            <input asp-for="Start" class="form-control mr-sm-2" />
+        </div>
+        <div class="col-6">
+            <label asp-for="End"></label>
+            <input asp-for="End" class="form-control mr-sm-2" />
+        </div>
+        <div class="col d-flex align-self-end justify-content-end">
+            <input type="submit" class="btn btn-outline-primary" value="Search" />
+        </div>
+    </div>
+</form>
+@if (Model.Stats.DayStats?.Count() > 0)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Количество</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var issue in Model.Stats.DayStats)
+            {
+                <tr>
+                    <th>@issue.IssueName</th>
+                    <th>@issue.Count</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

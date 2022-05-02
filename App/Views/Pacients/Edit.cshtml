@@ -1,6 +1,6 @@
 ﻿@model PacientEditViewModel
 @{
-    @ViewData["Title"];
+    ViewData["Title"] = "Редактирование";
     var path = Context.Request.Path;
     var query = Context.Request.QueryString;
     var currentUrl = path + query;

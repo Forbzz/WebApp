@@ -11,9 +11,9 @@
     <h5>@Model.Pacient?.Name1 @Model?.Pacient?.Name2 @Model.Pacient?.Name3</h5>
     <a class="btn btn-primary float-right" href="@Model.ReturnUrl">Назад</a>
     <br />
-    <h6>Дата выдачи: @Model?.Card?.DateOfIssue.ToShortDateString()</h6>
+    <h6>Дата выдачи: @Model?.Card?.DateOfIssue</h6>
     <br />
-    <h6>Дата рождения: @Model?.Pacient?.BirthDay.Value.ToShortDateString()</h6>
+    <h6>Дата рождения: @Model?.Pacient?.BirthDay</h6>
     <br />
     <h6>Пол: 
     @if (Model?.Pacient?.Male == Gender.Male)

@@ -11,7 +11,6 @@
         <h2>Выберите время</h2>
         <div class="container">
             <div id="times" class="row mb-2">
-
             </div>
         </div>
     </div>
@@ -20,4 +19,79 @@
 @section Scripts
 {
     @*ЗАПИСАТЬ КАЛЕНДАРЬ*@
+<script src="~/lib/fullcalendar/main.js"></script>
+<script src="~/js/Components/CardComponent.js"></script>
+<script>
+    $(document).ready(()=>{
+        const calendarEl = document.getElementById('calendar')
+        const num = (n, text_forms) =>{
+            n = Math.abs(n) % 100
+            var n1 = n % 10
+            if(n>10 && n < 20){
+                return text_forms[2]
+            }
+            if(n1 > 1 && n1 < 5){
+                return text_forms[1]
+            }
+            if(n1 === 1){
+                return text_forms[0]
+            }
+
+            return text_forms[2]
+        }
+
+        let calendar = new FullCalendar.Calendar(calendarEl,{
+            height: "auto",
+            dateClick: info =>{
+                console.log(info.date);
+                $.ajax({
+                    url: '@Url.Action("Tickets", new { id = ViewBag.ID})',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: {
+                        date: info.dateStr,
+                        userName: "@User.Identity.Name"
+                    },
+                    success: result =>{
+                        let times = $('#times')
+                        times.empty()
+                        $.each(result, (i,data) =>{
+                            times.append(Card.render(data.time, '@Url.Action("SignTicket", new { userName = User.Identity.Name,
+                            docId = ViewBag.ID})' + '&scheduleId=' + Number(data.id) + '&date=' + info.dateStr));
+                        })
+                    }
+                })
+            },
+            events: (info, callback, _) =>{
+                $.ajax({
+                    url: '@Url.Action("GetEvents", new { id = ViewBag.ID})',
+                    type: "GET",
+                    dateType: "JSON",
+                    data: {
+                        start: info.startStr,
+                        end: info.endStr
+                    },
+                    success: result =>{
+                        let events = []
+
+                        $.each(result, (i, data) =>{
+                            events.push({
+                                id: '',
+                                title: data.title + num(Number(data.title), [' талон', ' талона', ' талонов']),
+                                description: 'свободно' + data.title,
+                                start: data.start,
+                                allDay: true,
+                                backgroundColor: "#9500fc",
+                                borderColor: "#fc0110"
+                            });
+                        })
+
+                        callback(events);
+                    }
+                })
+            }
+        })
+        calendar.render();
+    })
+</script>
 }
