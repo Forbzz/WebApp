@@ -26,40 +26,38 @@ namespace App.Controllers
         public async Task<IActionResult> Index(int? page)
         {
             page ??= 1;
-            var model = new PacientIndexViewModel();
+            var vm = new PacientIndexViewModel();
             var count = await _pacientService.GetPacients().CountAsync();
-            model.PageViewModel = new PageViewModel(page.Value, 10, count);
-            var skip = (page.Value - 1) * model.PageViewModel.PageSize;
-
+            vm.PageViewModel = new PageViewModel(page.Value, 10, count);
+            var skip = (page.Value - 1) * vm.PageViewModel.PageSize;
             if (skip > count)
             {
                 return NotFound();
             }
+            vm.PageViewModel = new PageViewModel(page.Value, 10, count);
 
-            model.PageViewModel = new PageViewModel(page.Value, 10, count);
-
-            model.Pacients = _pacientService.GetPacients(skip, model.PageViewModel.PageSize, includeCard: true, includeAddress: true);
-            model.Search = new PacientSearchViewModel();
-            return View(model);
+            vm.Pacients = _pacientService
+                .GetPacients(skip, vm.PageViewModel.PageSize, includeCard: true, includeAddress: true);
+            vm.Search = new PacientSearchViewModel();
+            return View(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(int? page, PacientSearchViewModel model)
+        public async Task<IActionResult> Index(int? page, PacientSearchViewModel Search)
         {
             page ??= 1;
-            var pacientModel = new PacientIndexViewModel { Search = model };
+            var vm = new PacientIndexViewModel { Search = Search };
 
-            var query = _pacientService.SearchPacient(model.Name,
-                model.CardNumber, model.Address);
+            var query = _pacientService.SearchPacient(Search.Name,
+                Search.CardNumber, Search.Address);
 
             var count = await query.CountAsync();
             var pvm = new PageViewModel(page.Value, 10, count);
 
             var skip = (page.Value - 1) * pvm.PageSize;
-            query = _pacientService.SearchPacient(model.Name,
-                model.CardNumber, model.Address, skip, pvm.PageSize, includeCard: true,
+            query = _pacientService.SearchPacient(Search.Name,
+                Search.CardNumber, Search.Address, skip, pvm.PageSize, includeCard: true,
                 includeAddress: true, includeContacts: true);
-
             if (skip > count)
             {
                 return NotFound();
@@ -69,7 +67,7 @@ namespace App.Controllers
             {
                 Pacients = await query.ToListAsync(),
                 PageViewModel = pvm,
-                Search = model
+                Search = Search
             });
         }
 

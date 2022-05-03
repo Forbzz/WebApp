@@ -215,14 +215,27 @@ namespace App.Controllers
                 ReturnUrl = returnUrl,
                 DoctorId = id
             };
-            viewModel.Schedules = await _doctorService.GetScheduleByDocId(id).ToArrayAsync();
+            //viewModel.Schedules = await _doctorService.GetScheduleByDocId(id).ToArrayAsync();
+            viewModel.Schedules = await _doctorService.GetScheduleByDocId(id).OrderBy(x => x.DayOfWeek).ThenBy(x => x.Time).ToArrayAsync();
             viewModel.Doctor = await _doctorService.GetDoctorByIdAsync(id);
             return View(viewModel);
         }
 
-        public async Task<IActionResult> AddSchedule(string docId, Schedule schedule, string returnUrl)
+        public async Task<IActionResult> AddSchedule(string docId, Schedule schedule, string returnUrl, DayOfWeek[] selectedDay = null)
         {
-            await _doctorService.AddToSchedules(docId, schedule);
+            if (selectedDay.Length != 0)
+            {
+                //foreach (var day in selectedDay)
+                //{
+                //    schedule.DayOfWeek = day;
+                //    await _doctorService.AddToSchedules(docId, schedule);
+                //}
+                await _doctorService.AddToSchedulesRange(docId, schedule, selectedDay);
+            }
+            else
+            {
+                return RedirectToAction(nameof(ChangeSchedule), new { id = docId, returnUrl = returnUrl });
+            }
             return RedirectToAction(nameof(ChangeSchedule), new { id = docId, returnUrl = returnUrl });
         }
 

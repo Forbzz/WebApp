@@ -7,6 +7,27 @@ $(document).ready(() => {
         "filter": true,
         "orderMulti": false,
         autoWidth: false,
+        "language": {
+            "sProcessing": "Подождите...",
+            "sLengthMenu": "Показать _MENU_ записей",
+            "sZeroRecords": "Записи отсутствуют.",
+            "sInfo": "Записи с _START_ до _END_ из _TOTAL_ записей",
+            "sInfoEmpty": "Записи с 0 до 0 из 0 записей",
+            "sInfoFiltered": "(отфильтровано из _MAX_ записей)",
+            "sInfoPostFix": "",
+            "sSearch": "Поиск:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Первая",
+                "sPrevious": "Предыдущая",
+                "sNext": "Следующая",
+                "sLast": "Последняя"
+            },
+            "oAria": {
+                "sSortAscending": ": активировать для сортировки столбца по возрастанию",
+                "sSortDescending": ": активировать для сортировки столбцов по убыванию"
+            }
+        },
         "ajax": {
             "url": "/Users/LoadUsers",
             "type": "POST",
@@ -44,10 +65,13 @@ $(document).ready(() => {
 
                     return group.outerHTML;
                 },
-                sortable: false
+                sortable: false,
             }
         ]
     });
+
+    
+
     $("#backBtn").on('click', (e) => {
         e.preventDefault();
         window.history.go(-1);
@@ -69,6 +93,25 @@ $(document).ready(() => {
             }
         });
     })
-    document.querySelector("#users-table_filter").lastChild.innerHTML =
-        document.querySelector("#users-table_filter").lastChild.innerHTML.replace("Search", "Поиск")
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("users-table_paginate").children[0].firstChild.data = "Назад"
+        document.getElementById("users-table_paginate").children[2].firstChild.data = "Вперед"
+    })
+
+    
+    //document.querySelector("#users-table_filter").lastChild.innerHTML =
+    //    document.querySelector("#users-table_filter").lastChild.innerHTML.replace("Search", "Поиск")
+
+    document.getElementById("users-table_filter").children[0].firstChild.data = "Поиск:"
+    document.getElementById("users-table_length").children[0].firstChild.data = "Показать"
+    //document.getElementById("users-table_paginate").children[0].firstChild.data = "Назад"
+    //document.getElementById("users-table_paginate").children[2].firstChild.data = "Вперед"
+    //document.getElementById("users-table_paginate").children[0].innerHTML = "Назад"
+    //document.getElementById("users-table_paginate").children[0].innerText = "Назад"
+    //document.getElementById("users-table_paginate").firstChild.innerText = "Назад"
+        //document.getElementById("users-table_paginate").firstChild.innerText.replace("Previous", "Назад")
+    document.getElementById("users-table_info").innerHTML = " "
 });

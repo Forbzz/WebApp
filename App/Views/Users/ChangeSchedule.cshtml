@@ -1,11 +1,12 @@
 ﻿@model ChangeScheduleViewModel
 
-@{ 
+@{
     ViewData["Title"] = "Расписание";
     var culture = System.Globalization.CultureInfo.GetCultureInfo("ru");
     var path = Context.Request.Path;
     var query = Context.Request.QueryString;
     var currentUrl = path + query;
+    var prev = DayOfWeek.Sunday;
 }
 
 <div class="row mb-2">
@@ -32,25 +33,38 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach(var sch in Model.Schedules)
-            {
-                <tr>
-                    <td>@culture.DateTimeFormat.GetDayName(sch.DayOfWeek)</td>
-                    <td>@sch.Time</td>
-                    <td>@sch.Duration</td>
-                @if (User.IsInRole("Admin"))
+                @foreach (var sch in Model.Schedules)
                 {
-                    <td>
-                        <div class="btn-group">
-                            <a class="bth btn-primary btn-sm m-0 me-1" asp-action="EditSchedule" asp-route-id="@sch.Id"
+                    var current = sch.DayOfWeek;
+
+                    <tr>
+                        @{
+                            if (prev != current)
+                            {
+                                <td>@culture.DateTimeFormat.GetDayName(sch.DayOfWeek)</td>
+                                prev = sch.DayOfWeek;
+                            }
+                            else
+                            {
+                                <td> </td>
+                                prev = sch.DayOfWeek;
+                            }
+                        }
+                        <td>@sch.Time</td>
+                        <td>@sch.Duration</td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <div class="btn-group">
+                                    <a class="bth btn-primary btn-sm m-0 me-1" asp-action="EditSchedule" asp-route-id="@sch.Id"
                                asp-route-docId="@Model.DoctorId" asp-route-returnUrl="@currentUrl">Изменить</a>
-                            <a class="bth btn-danger btn-sm m-0" asp-action="DeleteSchedule" asp-route-id="@sch.Id"
+                                    <a class="bth btn-danger btn-sm m-0" asp-action="DeleteSchedule" asp-route-id="@sch.Id"
                                asp-route-docId="@Model.DoctorId" asp-route-returnUrl="@Model.ReturnUrl">Удалить</a>
-                        </div>
-                    </td>
+                                </div>
+                            </td>
+                        }
+                    </tr>
                 }
-                </tr>
-            }
             </tbody>
         </table>
     </div>
@@ -60,11 +74,42 @@
     <div class="row">
         <div class="col-md-4">
             <form asp-action="AddSchedule" asp-route-docId="@Model.DoctorId"
-                  asp-route-returnUrl="@Model.ReturnUrl" method="post">
+              asp-route-returnUrl="@Model.ReturnUrl" method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
-                    <input type="hidden" asp-for="@Model.DoctorId"/>
-                    <label asp-for="@Model.DayOfWeek"></label>
+                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                        <input type="checkbox" name="selectedDay" value="@DayOfWeek.Monday" class="btn-check" checked id="btncheck1" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btncheck1">Понедельник</label>
+
+                        <input type="checkbox" name="selectedDay" value="@DayOfWeek.Tuesday" class="btn-check" id="btncheck2" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btncheck2">Вторник</label>
+
+                        <input type="checkbox" name="selectedDay" class="btn-check" value="@DayOfWeek.Wednesday" id="btncheck3" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btncheck3">Среда</label>
+
+                        <input type="checkbox" name="selectedDay" class="btn-check" value="@DayOfWeek.Thursday" id="btncheck4" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btncheck4">Четверг</label>
+
+                        <input type="checkbox" name="selectedDay" class="btn-check" value="@DayOfWeek.Friday" id="btncheck5" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btncheck5">Пятница</label>
+
+                        <input type="checkbox" name="selectedDay" class="btn-check" value="@DayOfWeek.Saturday" id="btncheck6" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btncheck6">Суббота</label>
+
+                        <input type="checkbox" name="selectedDay" class="btn-check" value="@DayOfWeek.Sunday" id="btncheck7" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btncheck7">Воскресенье</label>
+                    </div>
+                    @*<div class="row">
+                        <input type="hidden" asp-for="@Model.DoctorId" />
+                        <input type="checkbox" name="selectedDay" value="@DayOfWeek.Monday" />Понедельник
+                        <input type="checkbox" name="selectedDay" value="@DayOfWeek.Tuesday" />Вторник
+                        <input type="checkbox" name="selectedDay" value="@DayOfWeek.Wednesday" />Среда
+                        <input type="checkbox" name="selectedDay" value="@DayOfWeek.Thursday" />Четверг
+                        <input type="checkbox" name="selectedDay" value="@DayOfWeek.Friday" />Пятница
+                        <input type="checkbox" name="selectedDay" value="@DayOfWeek.Saturday" />Суббота
+                        <input type="checkbox" name="selectedDay" value="@DayOfWeek.Sunday" />Воскресенье
+                        </div>*@
+                    @*<label asp-for="@Model.DayOfWeek"></label>
                     <select asp-for="@Model.DayOfWeek">
                         <option value="@DayOfWeek.Monday">Понедельник</option>
                         <option value="@DayOfWeek.Tuesday">Вторник</option>
@@ -74,20 +119,20 @@
                         <option value="@DayOfWeek.Saturday">Суббота</option>
                         <option value="@DayOfWeek.Sunday">Воскресенье</option>
                     </select>
-                    <span asp-validation-for="@Model.DayOfWeek" class="text-danger"></span>
+                    <span asp-validation-for="@Model.DayOfWeek" class="text-danger"></span>*@
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.Time"></label>
-                    <input asp-for="@Model.Time" class="form-control"/>
+                    <label asp-for="@Model.Time">Начало</label>
+                    <input asp-for="@Model.Time" class="form-control" />
                     <span asp-validation-for="@Model.Time" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.Duration"></label>
-                    <input asp-for="@Model.Duration" class="form-control"/>
+                    <label asp-for="@Model.Duration">Конец</label>
+                    <input asp-for="@Model.Duration" class="form-control" />
                     <span asp-validation-for="@Model.Duration" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Сохранить"/>
+                    <input type="submit" class="btn btn-primary" value="Сохранить" />
                 </div>
             </form>
         </div>

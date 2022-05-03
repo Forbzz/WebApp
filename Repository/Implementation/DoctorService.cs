@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository.Interface;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -161,6 +162,30 @@ namespace Repository.Implementation
             _dbContext.Schedules.Add(schedule);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task AddToSchedulesRange(string docId, Schedule schedule, DayOfWeek[] days)
+        {
+            var doc = await GetDoctorByIdAsync(docId);
+            schedule.Doctor = doc;
+            var listSchedule = new List<Schedule>();
+            foreach (var day in days)
+            {
+
+                listSchedule.Add(
+                    new Schedule
+                    {
+                        Doctor = doc,
+                        Time = schedule.Time,
+                        Duration = schedule.Duration,
+                        DayOfWeek = day
+
+                    }
+                );
+            }
+            _dbContext.Schedules.AddRange(listSchedule);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task RemoveFromSchedule(Schedule schedule)
         {
             _dbContext.Schedules.Remove(schedule);

@@ -22,6 +22,7 @@ namespace Repository.Interface
         IQueryable<Schedule> GetScheduleByDocId(string Id);
         Task<Schedule> GetScheduleById(int id);
         Task AddToSchedules(string docId, Schedule schedule);
+        Task AddToSchedulesRange(string docId, Schedule schedule, DayOfWeek[] days);
         Task<bool> UpdateSchedule(Schedule schedule);
         Task<bool> DeleteScheduleAsync(int id);
 
