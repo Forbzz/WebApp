@@ -85,6 +85,7 @@ $(document).ready(() => {
                 $.get(href).done(function (data) {
                     if (data.status == "success") {
                         table.ajax.reload();
+                        console.log("Check")
                     }
                     else {
                         bootbox.alert(data.error);
@@ -94,24 +95,4 @@ $(document).ready(() => {
         });
     })
 
-
-
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("users-table_paginate").children[0].firstChild.data = "Назад"
-        document.getElementById("users-table_paginate").children[2].firstChild.data = "Вперед"
-    })
-
-    
-    //document.querySelector("#users-table_filter").lastChild.innerHTML =
-    //    document.querySelector("#users-table_filter").lastChild.innerHTML.replace("Search", "Поиск")
-
-    document.getElementById("users-table_filter").children[0].firstChild.data = "Поиск:"
-    document.getElementById("users-table_length").children[0].firstChild.data = "Показать"
-    //document.getElementById("users-table_paginate").children[0].firstChild.data = "Назад"
-    //document.getElementById("users-table_paginate").children[2].firstChild.data = "Вперед"
-    //document.getElementById("users-table_paginate").children[0].innerHTML = "Назад"
-    //document.getElementById("users-table_paginate").children[0].innerText = "Назад"
-    //document.getElementById("users-table_paginate").firstChild.innerText = "Назад"
-        //document.getElementById("users-table_paginate").firstChild.innerText.replace("Previous", "Назад")
-    document.getElementById("users-table_info").innerHTML = " "
 });

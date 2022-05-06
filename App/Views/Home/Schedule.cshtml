@@ -18,8 +18,8 @@
 
 @section Scripts
 {
-    @*ЗАПИСАТЬ КАЛЕНДАРЬ*@
 <script src="~/lib/fullcalendar/main.js"></script>
+<script src="~/lib/fullcalendar/locales-all.js"></script>
 <script src="~/js/Components/CardComponent.js"></script>
 <script>
     $(document).ready(()=>{
@@ -42,6 +42,7 @@
 
         let calendar = new FullCalendar.Calendar(calendarEl,{
             height: "auto",
+            locale: "ru",
             dateClick: info =>{
                 console.log(info.date);
                 $.ajax({

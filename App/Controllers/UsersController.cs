@@ -52,6 +52,7 @@ namespace App.Controllers
             return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> LoadUsers()
         {
             try
@@ -225,11 +226,6 @@ namespace App.Controllers
         {
             if (selectedDay.Length != 0)
             {
-                //foreach (var day in selectedDay)
-                //{
-                //    schedule.DayOfWeek = day;
-                //    await _doctorService.AddToSchedules(docId, schedule);
-                //}
                 await _doctorService.AddToSchedulesRange(docId, schedule, selectedDay);
             }
             else
@@ -303,7 +299,7 @@ namespace App.Controllers
 
             return Ok(new
             {
-                status = "Success"
+                status = "success"
             });
         }
 

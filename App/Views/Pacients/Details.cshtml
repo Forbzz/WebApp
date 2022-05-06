@@ -36,7 +36,7 @@
     <br />
     <dl class="row text-body text-black-50">
         @Model.Pacient?.Address?.Country, @Model.Pacient?.Address?.District район,
-        г. @Model.Pacient?.Address?.Town, ул. @Model.Pacient?.Address?.Street д. @Model.Pacient?.Address?.HomeNumber,
+        г. @Model.Pacient?.Address?.Town, @Model.Pacient?.Address?.Street д. @Model.Pacient?.Address?.HomeNumber,
         @if (!string.IsNullOrEmpty(Model.Pacient?.Address?.ApartmentNumber))
         {
             <text>
@@ -44,6 +44,16 @@
             </text>
         }
     </dl>
+    @*<dl class="row text-body text-black-50">
+        @Model.Pacient?.Address?.Country, @Model.Pacient?.Address?.District район,
+        г. @Model.Pacient?.Address?.Town, ул. @Model.Pacient?.Address?.Street д. @Model.Pacient?.Address?.HomeNumber,
+        @if (!string.IsNullOrEmpty(Model.Pacient?.Address?.ApartmentNumber))
+        {
+            <text>
+                кв. @Model.Pacient?.Address?.ApartmentNumber
+            </text>
+        }
+    </dl>*@
 </div>
 
 <div class="row">

@@ -10,15 +10,15 @@
     <div class="form-group row">
         <div class="col-6">
             <label asp-for="@Model.Search.Name">Имя</label>
-            <input asp-for="@Model.Search.Name." class="form-control mr-sm-2" type="text" placeholder="Имя/фамилия/отчество" aria-label="Имя" />
+            <input asp-for="@Model.Search.Name" class="form-control mr-sm-2" type="text" placeholder="Имя/фамилия/отчество" aria-label="Имя" />
         </div>
         <div class="col-6">
             <label asp-for="@Model.Search.Address">Адрес</label>
-            <input asp-for="@Model.Search.Address." class="form-control mr-sm-2" type="text" placeholder="Адрес" aria-label="Имя" />
+            <input asp-for="@Model.Search.Address" class="form-control mr-sm-2" type="text" placeholder="Адрес" aria-label="Имя" />
         </div>
         <div class="col-6">
             <label asp-for="@Model.Search.CardNumber">Номер карточки</label>
-            <input asp-for="@Model.Search.CardNumber." class="form-control mr-sm-2" type="text" placeholder="Номер" aria-label="Имя" />
+            <input asp-for="@Model.Search.CardNumber" class="form-control mr-sm-2" type="text" placeholder="Номер" aria-label="Имя" />
         </div>
         <div class="col d-flex align-self-end justify-content-end">
             <input type="submit" class="btn btn-outline-primary" value="Поиск" />
@@ -51,7 +51,8 @@
                     <td>@pacient.PhoneNumber</td>
                     <td>@pacient.Email</td>
                     <td>@pacient?.Card?.Number</td>
-                    <td>ул. @pacient?.Address?.Street д. @pacient?.Address?.HomeNumber кв. @pacient?.Address?.ApartmentNumber</td>
+                    <td>@pacient?.Address?.Street д. @pacient?.Address?.HomeNumber кв. @pacient?.Address?.ApartmentNumber</td>
+                    @*<td>ул. @pacient?.Address?.Street д. @pacient?.Address?.HomeNumber кв. @pacient?.Address?.ApartmentNumber</td>*@
                 </tr>
                 <tr>
                     <td colspan="8">

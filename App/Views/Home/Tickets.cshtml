@@ -1,6 +1,6 @@
 ﻿@model TicketsViewModel
 @{
-    ViewData["Title"] = "Талоны";
+    ViewData["Title"] = "Предстоящие приемы";
     var path = Context.Request.Path;
     var query = Context.Request.QueryString;
     var currentUrl = path + query;
@@ -47,7 +47,7 @@
                     <td>@ticket.Schedule.Time</td>
                     <td>
                         <a type="submit" asp-controller="Home" asp-action="DeleteTicket"
-                           asp-route-id="@ticket.Id" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-danger">Delete</a>
+                           asp-route-id="@ticket.Id" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-danger">Удалить</a>
                         @if (User.IsInRole("Doctor") || User.IsInRole("Admin"))
                         {
                             <a class="btn btn-primary" asp-controller="Card" asp-action="Index" asp-route-id="@ticket.Pacient.Id" asp-route-returnUrl="@currentUrl">Карточка</a>

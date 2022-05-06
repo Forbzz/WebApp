@@ -32,6 +32,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Пользователи</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="Index">Подтверждение талонов</a>
+                            </li>
                             @*<li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Index">Услуги</a>
                             </li>
@@ -79,6 +82,16 @@
     <script src="~/lib/bootbox.js/bootbox.min.js"></script>
     @*<script src="~/js/Components/CardComponent.js"></script>
     <script src="~/js/Components/ModalCompontnt.js"></script>*@
+    <script>
+        bootbox.setDefaults({
+            locale:"ru"
+        });
+        bootbox.addLocale({
+            OK : 'Да',
+            CANCEL : 'Нет',
+            CONFIRM : 'Подтвердить'
+        })
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

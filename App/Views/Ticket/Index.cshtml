@@ -1,0 +1,126 @@
+﻿@model IEnumerable<Data.Domain.Ticket>
+@{
+    ViewData["Title"] = "Талоны";
+    var path = Context.Request.Path;
+    var query = Context.Request.QueryString;
+    var currentUrl = path + query;
+}
+
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                @*<th scope="col">#</th>*@
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Отчество</th>
+                <th>Дата</th>
+                <th>Телефон</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model)
+            {
+                <tr>
+                    @*<td>@doctor.Id</td>*@
+                    <td>@ticket.Pacient.Name1</td>
+                    <td>@ticket.Pacient.Name2</td>
+                    <td>@ticket.Pacient.Name3</td>
+                    <td>@ticket.TicketDate.ToShortDateString() @ticket.Schedule.Time</td>
+                    <td>@ticket.Pacient.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                        <div class="btn-group">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-success approveBtn" asp-controller="Ticket" asp-action="ApproveTicket"
+                                   asp-route-id="@ticket.Id">Подтвердить</a>
+                                <a class="btn btn-danger deleteBtn" asp-controller="Ticket"
+                                   asp-action="DeclineTicket" asp-route-id="@ticket.Id">Отменить</a>
+
+                            }
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center">
+        <br />
+        <h4>Заказанные талоны отсутствуют</h4>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        //$(document).ready(() => {
+        //    $('a.deleteBtn').click((e) => {
+        //        e.preventDefault();
+        //        href = e.target.href;
+        //        bootbox.confirm("Отменить талон?", function (result) {
+        //            if (result) {
+        //                $.get(href).done(function (data) {
+        //                    if (data.status == "success") {
+        //                        document.location.reload();
+        //                    }
+        //                    else {
+        //                        bootbox.alert(data.error);
+        //                    }
+        //                });
+        //            }
+        //        })
+        //    })
+        //})
+
+        //$(document).ready(() => {
+        //    $('a.approveBtn').click((e) => {
+        //        e.preventDefault();
+        //        href = e.target.href;
+        //        bootbox.confirm({
+        //            title: "Подтвердить талон?",
+        //            message: "Подтвердить талон?",
+        //            buttons:{
+        //                cancel:{
+        //                    label: "Нет",
+        //                    className: "btn-danger"
+        //                },
+        //                confirm:{
+        //                    label: "Да",
+        //                    className: "btn-succes"
+        //                }
+        //            },
+        //            callback: result=>{
+        //                if (result) {
+        //                $.get(href).done(function (data) {
+        //                    if (data.status == "success") {
+        //                        document.location.reload();
+        //                    }
+        //                    else {
+        //                        bootbox.alert(data.error);
+        //                    }
+        //                });
+        //            }
+        //        })
+        //        //bootbox.confirm("Подтвердить талон?", function (result) {
+        //        //    if (result) {
+        //        //        $.get(href).done(function (data) {
+        //        //            if (data.status == "success") {
+        //        //                document.location.reload();
+        //        //            }
+        //        //            else {
+        //        //                bootbox.alert(data.error);
+        //        //            }
+        //        //        });
+        //        //    }
+        //        //})
+        //    })
+        //})
+    </script>
+}

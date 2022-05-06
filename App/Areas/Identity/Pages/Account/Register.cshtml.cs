@@ -64,6 +64,11 @@ namespace App.Areas.Identity.Pages.Account
             [Display(Name = "Почта")]
             public string Email { get; set; }
 
+            [Required(ErrorMessage = "Введите номер телефона")]
+            [DataType(DataType.PhoneNumber)]
+            [Display(Name = "Номер телефона")]
+            public string Phone { get; set; }
+
             [Required(ErrorMessage = "Введите пароль")]
             [DataType(DataType.Password)]
             [Display(Name = "Пароль")]
@@ -94,9 +99,10 @@ namespace App.Areas.Identity.Pages.Account
                     Name1 = Input.Name1,
                     Name2 = Input.Name2,
                     Name3 = Input.Name3,
+                    PhoneNumber = Input.Phone,
                     Address = new Address(),
                     Card = new Card(),
-                    Contacts = new Contacts(),
+                    Contacts = new Contacts() { Phone = Input.Phone },
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
