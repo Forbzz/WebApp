@@ -94,6 +94,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6">
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <h5 class="card-title">График работы врачей</h5>
+                        <a class="btn btn-primary stretched-link" asp-controller="Doctors" asp-action="DoctorsSchedule"
+                   asp-route-returnUrl="@currentUrl">Перейти</a>
+                    </div>
+                </div>
+        </div>
         @if (User.IsInRole("Pacient"))
         {
             <div class="col-md-6">

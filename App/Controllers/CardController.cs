@@ -262,9 +262,11 @@ namespace App.Controllers
 
             else
             {
-                model.Examinations = await _cardService.GetExaminations(card.Id)
+                model.Examinations = await _cardService.GetExaminations(card.Id).Include(x=>x.Doctor)
                     .OrderBy(x => x.ExaminationDate).ToListAsync();
             }
+
+            
             return View(model);
         }
 

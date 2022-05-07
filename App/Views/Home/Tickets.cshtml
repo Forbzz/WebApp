@@ -7,7 +7,7 @@
 }
 
 <div>
-    <h3 class="mb-1 text-center">@Model.Header</h3>
+    <h3 class="mb-1 text-center">Предстоящие приемы</h3>
     @if (!string.IsNullOrEmpty(Model.ReturnUrl))
     {
         <a class="btn btn-primary float-right" href="@Model.ReturnUrl">Назад</a>
@@ -43,7 +43,7 @@
                         <td>@ticket.Schedule.Doctor?.Name1 @ticket.Schedule.Doctor?.Name2 @ticket.Pacient?.Name3</td>
                         <td>@ticket.Schedule.Doctor?.Cabinet?.Number</td>
                     }
-                    <td>@ticket.TicketDate</td>
+                    <td>@ticket.TicketDate.ToShortDateString()</td>
                     <td>@ticket.Schedule.Time</td>
                     <td>
                         <a type="submit" asp-controller="Home" asp-action="DeleteTicket"

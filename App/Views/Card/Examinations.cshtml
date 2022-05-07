@@ -49,7 +49,8 @@
                     <td>@vaccine.Type</td>
                     <td>@vaccine.Result</td>
                     <td>@vaccine.ExaminationDate.ToShortDateString()</td>
-                    <td>@vaccine?.Doctor?.Name1 @vaccine?.Doctor?.Name2 @vaccine?.Doctor?.Name3</td>
+                    @*<td>@vaccine?.Doctor?.Name1 @vaccine?.Doctor?.Name2 @vaccine?.Doctor?.Name3</td>*@
+                    <td style="width: 140px;">@vaccine?.Doctor?.Name2 @vaccine?.Doctor?.Name1[0]. @vaccine?.Doctor?.Name3[0].</td>
                 </tr>
             }
         </tbody>

@@ -175,6 +175,7 @@ namespace Repository.Implementation
             user.Work = pacient.Work;
             user.Contacts.Mail = pacient.Contacts.Mail;
             user.Contacts.Phone = pacient.Contacts.Phone;
+            user.PhoneNumber = pacient.Contacts.Phone;
             user.Card.Number = pacient.Card.Number;
             _dbContext.Pacients.Update(user);
             return await _dbContext.SaveChangesAsync() > 0;

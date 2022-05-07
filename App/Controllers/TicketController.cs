@@ -36,7 +36,7 @@ namespace App.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var pacients = await _context.Tickets.Include(x => x.Pacient).Include(x => x.Schedule)
+            var pacients = await _context.Tickets.Include(x => x.Pacient).Include(x => x.Schedule).ThenInclude(x=>x.Doctor)
                 .Where(x => x.Confirmed == false)
                 .OrderBy(x => x.TicketDate)
                 .ThenBy(x => x.Schedule.Time)

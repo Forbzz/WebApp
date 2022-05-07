@@ -17,6 +17,7 @@
                 <th>Фамилия</th>
                 <th>Отчество</th>
                 <th>Дата</th>
+                <th>Врач</th>
                 <th>Телефон</th>
             </tr>
         </thead>
@@ -29,6 +30,7 @@
                     <td>@ticket.Pacient.Name2</td>
                     <td>@ticket.Pacient.Name3</td>
                     <td>@ticket.TicketDate.ToShortDateString() @ticket.Schedule.Time</td>
+                    <td>@ticket?.Schedule?.Doctor?.Name2 @ticket?.Schedule?.Doctor?.Name1[0]. @ticket?.Schedule?.Doctor?.Name3[0].</td>
                     <td>@ticket.Pacient.PhoneNumber</td>
                 </tr>
                 <tr>

@@ -60,7 +60,7 @@ else
 
 <br />
 
-<div>
+@*<div>
     <h5>
         <a asp-action="Vaccinations" asp-route-id="@Model.Pacient.Id"
            asp-route-returnUrl="@currentUrl">Вакцинации</a>
@@ -96,7 +96,7 @@ else
     <div class="text-center">
         Нет вакцинаций
     </div>
-}
+}*@
 
 <br />
 
@@ -118,7 +118,7 @@ else
         <tr>
             <th>Тип</th>
             <th>Дата</th>
-            <th>Доктор</th>
+@*            <th>Доктор</th>*@
             <th>Результат</th>
         </tr>
         @foreach (var vaccine in Model.Card.Examinations)
@@ -126,7 +126,7 @@ else
             <tr>
                 <td>@vaccine.Type</td>
                 <td>@vaccine.ExaminationDate</td>
-                <td>@vaccine?.Doctor?.Name1 @vaccine?.Doctor?.Name2 @vaccine?.Doctor?.Name3</td>
+@*                <td>@vaccine?.Doctor?.Name1 @vaccine?.Doctor?.Name2 @vaccine?.Doctor?.Name3</td>*@
                 <td>@vaccine.Result</td>
             </tr>
         }
@@ -213,7 +213,7 @@ else
     </div>*@
 
 
-<br />
+@*<br />
 <div>
     <h5>
         <a asp-action="DiagnoseHistory" asp-route-id="@Model.Pacient.Id"
@@ -261,7 +261,7 @@ else
     <div class="text-center">
         Нет диагнозов
     </div>
-}
+}*@
 
 <br />
 <div>

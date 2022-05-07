@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Repository.Interface;
 using App.ViewModels.User;
 using App.ViewModels.Stats;
+using Data;
 
 namespace App.Controllers
 {
@@ -20,13 +21,15 @@ namespace App.Controllers
         private readonly IDoctorService _doctorService;
         private readonly IStatsService _statsService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public DoctorsController(ILogger<UsersController> logger, IDoctorService doctorService, IStatsService statsService, UserManager<AppUser> userManager)
+        public DoctorsController(ILogger<UsersController> logger, IDoctorService doctorService, IStatsService statsService, UserManager<AppUser> userManager, ApplicationDbContext context)
         {
             _logger = logger;
             _doctorService = doctorService;
             _statsService = statsService;
             _userManager = userManager;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -116,6 +119,28 @@ namespace App.Controllers
         public async Task<IActionResult> Stats(DoctorStatsViewModel model)
         {
             model.Stats = await _statsService.GetDoctorStats(model.Id, model.Start, model.End);
+            return View(model);
+        }
+
+        
+        public async Task<IActionResult> DoctorsSchedule()
+        {
+            var model = new DoctorScheduleViewModel();
+            model.Branches = await _doctorService.GetBranches().Select(x => x.Name).ToListAsync();
+            model.Specialities = await _doctorService.GetSpecialities().Select(x => x.Name).ToListAsync();
+            
+            model.Doctors = await _context.Doctors.Include(x => x.Branch).Include(x => x.Speciality).Include(x => x.Cabinet).Include(x => x.Schedule).ToListAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DoctorsSchedule(DoctorScheduleViewModel model)
+        {
+            model.Branches = await _doctorService.GetBranches().Select(x => x.Name).ToListAsync();
+            model.Specialities = await _doctorService.GetSpecialities().Select(x => x.Name).ToListAsync();
+            model.Doctors = await _doctorService.GetDoctors(model.Name, model.Speciality, model.Branch).Include(x => x.Cabinet).Include(x => x.Schedule).ToListAsync();
+
             return View(model);
         }
 
