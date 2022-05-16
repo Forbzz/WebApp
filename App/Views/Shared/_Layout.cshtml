@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-   @* <link rel="stylesheet" herf="~/lib/bootstrap5/css/bootstrap.css"/>*@
-    <link rel="stylesheet" href="~/lib/bootstrap5/css/bootstrap.css"/>
+    @* <link rel="stylesheet" herf="~/lib/bootstrap5/css/bootstrap.css"/>*@
+    <link rel="stylesheet" href="~/lib/bootstrap5/css/bootstrap.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -15,12 +15,15 @@
     <link rel="stylesheet" href="~/datatables/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="~/lib/fullcalendar/main.css" />
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
+                <a class="nav-item" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -37,10 +40,10 @@
                             </li>
                             @*<li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Index">Услуги</a>
-                            </li>
-                            <li class="nav-item">
+                                </li>
+                                <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Stats" asp-action="Index">Статистика</a>
-                            </li>*@
+                                </li>*@
                         }
                         @if (User.IsInRole("Admin") || User.IsInRole("Pacient"))
                         {
@@ -67,31 +70,49 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+        @{
+            if(User.IsInRole("Pacient") || !User.Identity.IsAuthenticated)
+            {
+             <div class="row mb-2" style="min-height: 150px;">
+                <div class="info">
+                    <div class="info__item">
+                        <img class="info__img" src="~/img/address.svg" />
+                        <h3>Адрес</h3>
+                        <p>пр. Дзержинского 122</p>
+                    </div>
+                    <div class="info__item">
+                        <img class="info__img" src="~/img/phone.svg" />
+                        <h3>Телефон</h3>
+                        <p>+375-44-795-86-25</p>
+                    </div>
+                    <div class="info__item">
+                        <img class="info__img" src="~/img/time.svg" />
+                        <h3>Время работы</h3>
+                        <p>ПН-СБ</p>
+                        <p style="margin: -10px auto;">8:00 - 22:00</p>
+                    </div>
+                    <div class="info__item">
+                        <img class="info__img" src="~/img/email.svg" />
+                        <h3>Почта</h3>
+                        <p>poli@gmail.com</p>
+                    </div>
+                </div>
+                </div>
+            }
+            else
+            {
+             <div class="container">
+                &copy; 2022 - App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+             </div>   
+            }
+        }
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>*@
     <script src="~/lib/bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-@*    <script src="~/js/Users/Index.js"></script>
-    <script src="~/js/Users/UsersComponent.js"></script>*@
     <script src="~/datatables/js/jquery.dataTables.min.js"></script>
     <script src="~/lib/bootbox.js/bootbox.min.js"></script>
-    @*<script src="~/js/Components/CardComponent.js"></script>
-    <script src="~/js/Components/ModalCompontnt.js"></script>*@
-@*    <script>
-        bootbox.setDefaults({
-            locale:"ru"
-        });
-        bootbox.addLocale({
-            OK : 'Да',
-            CANCEL : 'Нет',
-            CONFIRM : 'Подтвердить'
-        })
-    </script>*@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
