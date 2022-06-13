@@ -80,18 +80,40 @@ namespace Repository.Implementation
         }
         public async Task<IssueStatsResult> GetIssueStats(DateTime start, DateTime end)
         {
-            var result = new IssueStatsResult();
-            result.Start = start;
-            result.End = end;
-            result.DayStats = await (from p in _dbContext.Diagnoses
-                                     group p by p.Name
-                into g
-                                     select new IssueStatsResultItem()
-                                     {
-                                         Count = g.Count(),
-                                         IssueName = g.Key
-                                     }).ToArrayAsync();
-            return result;
+            //var result = new IssueStatsResult();
+            //result.Start = start;
+            //result.End = end;
+            //result.DayStats = await (from p in _dbContext.Diagnoses
+            //                         group p by p.Name
+            //                         into g
+            //                         select new IssueStatsResultItem()
+            //                         {
+            //                             Count = g.Count(),
+            //                             IssueName = g.Key
+                                         
+            //                         }).ToArrayAsync();
+            //var newRes = new IssueStatsResult();
+            //newRes.Start = start;
+            //newRes.End = end;
+
+            //newRes.DayStats = await _dbContext.Diagnoses.Where(x => x.EstablisheDate > start && x.EstablisheDate < end).Select(x=>new IssueStatsResultItem
+            //{
+            //    Count = 1,
+            //    IssueName = x.Name
+            //}).ToListAsync();
+
+            var newRes1 = new IssueStatsResult();
+            newRes1.Start = start;
+            newRes1.End = end;
+
+            newRes1.DayStats = await _dbContext.Diagnoses.Where(x => x.EstablisheDate > start && x.EstablisheDate < end).GroupBy(x => x.Name).Select(x => new IssueStatsResultItem
+            {
+                Count = x.Count(),
+                IssueName = x.Key
+            }).ToListAsync();
+
+
+            return newRes1;
         }
     }
 }
