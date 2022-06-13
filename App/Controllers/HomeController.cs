@@ -48,7 +48,23 @@ namespace App.Controllers
             return View(vm);
         }
 
+        public async Task<IActionResult> SpecialitiesWithUser(string userName)
+        {
+            var vm = new SpecialitiesViewModel
+            {
+                Specialities = await _doctorService.GetSpecialities().Select(x => x).ToListAsync()
+            };
+            return View(vm);
+        }
+
         public async Task<IActionResult> DoctorList(int specId)
+        {
+            var docs = await _doctorService.GetDoctorsBySpec(specId).ToArrayAsync();
+
+            return View(new HomeDoctorsViewModel { Doctors = docs });
+        }
+
+        public async Task<IActionResult> DoctorListWithUser(int specId, string userName)
         {
             var docs = await _doctorService.GetDoctorsBySpec(specId).ToArrayAsync();
 
@@ -65,6 +81,13 @@ namespace App.Controllers
         public async Task<IActionResult> Schedule(string Id)
         {
             ViewBag.ID = Id;
+            return View();
+        }
+
+        public async Task<IActionResult> ScheduleWithUser(string id, string username)
+        {
+            ViewBag.ID = id;
+            ViewBag.UserName = username;
             return View();
         }
 

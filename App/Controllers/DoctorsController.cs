@@ -42,6 +42,17 @@ namespace App.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> IndexWithUser(string username)
+        {
+            var model = new DoctorSearchViewModel();
+            model.Branches = await _doctorService.GetBranches().Select(x => x.Name).ToListAsync();
+            model.Specialities = await _doctorService.GetSpecialities().Select(x => x.Name).ToListAsync();
+            model.Doctors = await _doctorService.GetDoctors().Include(x => x.Contacts).ToListAsync();
+            model.PacientName = username;
+
+            return View(model);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Index(DoctorSearchViewModel model)
         {

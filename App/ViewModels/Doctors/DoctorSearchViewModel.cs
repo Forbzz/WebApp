@@ -15,6 +15,8 @@ namespace App.ViewModels.Doctors
         [Display(Name = "Специальность")]
         public string Speciality { get; set; }
 
+        public string PacientName { get; set; }
+
         public ICollection<string> Branches { get; set; }
 
         public ICollection<string> Specialities { get; set; }

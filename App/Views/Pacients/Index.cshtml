@@ -67,6 +67,8 @@
                                    asp-route-returnUrl="@currentUrl">Талоны</a>
                                 <a class="btn btn-danger deleteBtn" asp-controller="Users"
                                    asp-action="Remove" asp-route-id="@pacient.Id">Удалить</a>
+                                <a class="btn btn-primary" asp-controller="Doctors" asp-action="IndexWithUser" asp-route-username="@pacient.UserName"
+                                   >Записать на прием</a>
                             }
                             @if (User.IsInRole("Doctor") || User.IsInRole("Admin"))
                             {
