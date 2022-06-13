@@ -61,7 +61,17 @@
                     <td>@doctor.Name1</td>
                     <td>@doctor.Name2</td>
                     <td>@doctor.Name3</td>
-                    <td>@doctor.PhoneNumber</td>
+                    @{
+                        if(@doctor.PhoneNumber is null)
+                        {
+                            <td>@doctor.Contacts.Phone</td>
+                        }
+                        else
+                        {
+                            <td>@doctor.PhoneNumber</td>
+                        }
+                    }
+                    
                     <td>@doctor.Email</td>
                     <td>@doctor.Branch?.Name</td>
                     <td>@doctor.Speciality?.Name</td>
